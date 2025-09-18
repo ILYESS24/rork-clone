@@ -16,7 +16,11 @@ import {
   Zap,
   LogOut,
   Crown,
-  ChevronDown
+  ChevronDown,
+  BarChart3,
+  Users,
+  Shield,
+  Rocket
 } from 'lucide-react';
 // import { useAuth } from '@/components/auth/AuthModal';
 
@@ -40,9 +44,12 @@ export function RorkNavigation({ currentUser }: NavigationProps = {}) {
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'Marketplace', href: '/marketplace', icon: Store },
     { name: 'Builder', href: '/builder', icon: Code },
-    { name: 'Templates', href: '/templates', icon: Layers },
+    { name: 'Marketplace', href: '/marketplace', icon: Store },
+    { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+    { name: 'Teams', href: '/teams', icon: Users },
+    { name: 'Deployment', href: '/deployment', icon: Rocket },
+    { name: 'Admin', href: '/admin', icon: Shield },
   ];
 
   const userMenuItems = [
