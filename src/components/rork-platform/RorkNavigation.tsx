@@ -18,7 +18,7 @@ import {
   Crown,
   ChevronDown
 } from 'lucide-react';
-import { useAuth } from '@/components/auth/AuthModal';
+// import { useAuth } from '@/components/auth/AuthModal';
 
 interface NavigationProps {
   currentUser?: {
@@ -28,12 +28,15 @@ interface NavigationProps {
   };
 }
 
-export function RorkNavigation({ currentUser }: NavigationProps) {
+export function RorkNavigation({ currentUser }: NavigationProps = {}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  // Mock auth for now
+  const user = null;
+  const isAuthenticated = false;
+  const logout = () => {};
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home },

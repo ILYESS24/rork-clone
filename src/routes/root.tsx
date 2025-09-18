@@ -15,11 +15,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <div className="min-h-screen bg-gray-50">
-          <RorkNavigation currentUser={{
-            name: 'Alex Developer',
-            avatar: '/api/placeholder/32/32',
-            notifications: 3
-          }} />
+          <RorkNavigation />
           <main>
             <Outlet />
           </main>
