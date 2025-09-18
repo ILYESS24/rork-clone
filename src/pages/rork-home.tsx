@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom'; // Using TanStack Router instead
 import { ArrowRight, Play, Star, Users, Zap, Shield, Code, Palette, Layers } from 'lucide-react';
 import { RorkNavigation } from '@/components/rork-platform/RorkNavigation';
 

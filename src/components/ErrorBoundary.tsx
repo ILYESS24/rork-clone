@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { LightbulbIcon } from "lucide-react";
 import { ErrorComponentProps } from "@tanstack/react-router";
-import { usePostHog } from "posthog-js/react";
+// import { usePostHog } from "posthog-js/react"; // Removed for web version
 import { IpcClient } from "@/ipc/ipc_client";
 
 export function ErrorBoundary({ error }: ErrorComponentProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const posthog = usePostHog();
+  // const posthog = usePostHog(); // Removed for web version
 
   useEffect(() => {
     console.error("An error occurred in the route:", error);
-    posthog.captureException(error);
+    // posthog.captureException(error); // Removed for web version
   }, [error]);
 
   const handleReportBug = async () => {
