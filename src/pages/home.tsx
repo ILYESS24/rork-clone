@@ -1,283 +1,256 @@
-import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useAtom, useSetAtom } from "jotai";
-import { homeChatInputValueAtom } from "../atoms/chatAtoms";
-import { selectedAppIdAtom } from "@/atoms/appAtoms";
-import { IpcClient } from "@/ipc/ipc_client";
-import { generateCuteAppName } from "@/lib/utils";
-import { useLoadApps } from "@/hooks/useLoadApps";
-import { useSettings } from "@/hooks/useSettings";
-// SetupBanner removed - web-only interface
-import { isWeb } from "@/utils/environment";
-import { isPreviewOpenAtom } from "@/atoms/viewAtoms";
-import { useState, useEffect, useCallback } from "react";
-import { useStreamChat } from "@/hooks/useStreamChat";
-import { HomeChatInput } from "@/components/chat/HomeChatInput";
-// import { usePostHog } from "posthog-js/react"; // Removed for web version
-import { PrivacyBanner } from "@/components/TelemetryBanner";
-import { INSPIRATION_PROMPTS } from "@/prompts/inspiration_prompts";
-import { useAppVersion } from "@/hooks/useAppVersion";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { useTheme } from "@/contexts/ThemeContext";
-import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
-import { ImportAppButton } from "@/components/ImportAppButton";
-import { showError } from "@/lib/toast";
-import { invalidateAppQuery } from "@/hooks/useLoadApp";
-import { useQueryClient } from "@tanstack/react-query";
-
-import type { FileAttachment } from "@/ipc/ipc_types";
-import { NEON_TEMPLATE_IDS } from "@/shared/templates";
-import { neonTemplateHook } from "@/client_logic/template_hook";
-
-// Adding an export for attachments
-export interface HomeSubmitOptions {
-  attachments?: FileAttachment[];
-}
+import React from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Plus, 
+  Zap, 
+  Palette, 
+  Code, 
+  Rocket, 
+  Star, 
+  Users, 
+  ArrowRight,
+  Play,
+  Download,
+  Eye
+} from 'lucide-react';
 
 export default function HomePage() {
-  const [inputValue, setInputValue] = useAtom(homeChatInputValueAtom);
   const navigate = useNavigate();
-  const search = useSearch({ from: "/" });
-  const setSelectedAppId = useSetAtom(selectedAppIdAtom);
-  const { refreshApps } = useLoadApps();
-  const { settings, updateSettings } = useSettings();
-  const setIsPreviewOpen = useSetAtom(isPreviewOpenAtom);
-  const [isLoading, setIsLoading] = useState(false);
-  const { streamMessage } = useStreamChat({ hasChatId: false });
-  const posthog = usePostHog();
-  const appVersion = useAppVersion();
-  const [releaseNotesOpen, setReleaseNotesOpen] = useState(false);
-  const [releaseUrl, setReleaseUrl] = useState("");
-  const { theme } = useTheme();
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    const updateLastVersionLaunched = async () => {
-      if (
-        appVersion &&
-        settings &&
-        settings.lastShownReleaseNotesVersion !== appVersion
-      ) {
-        await updateSettings({
-          lastShownReleaseNotesVersion: appVersion,
-        });
 
-        try {
-          const result = await IpcClient.getInstance().doesReleaseNoteExist({
-            version: appVersion,
-          });
-
-          if (result.exists && result.url) {
-            setReleaseUrl(result.url + "?hideHeader=true&theme=" + theme);
-            setReleaseNotesOpen(true);
-          }
-        } catch (err) {
-          console.warn(
-            "Unable to check if release note exists for: " + appVersion,
-            err,
-          );
-        }
-      }
-    };
-    updateLastVersionLaunched();
-  }, [appVersion, settings, updateSettings, theme]);
-
-  // Get the appId from search params
-  const appId = search.appId ? Number(search.appId) : null;
-
-  // State for random prompts
-  const [randomPrompts, setRandomPrompts] = useState<
-    typeof INSPIRATION_PROMPTS
-  >([]);
-
-  // Function to get random prompts
-  const getRandomPrompts = useCallback(() => {
-    const shuffled = [...INSPIRATION_PROMPTS].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 5);
-  }, []);
-
-  // Initialize random prompts
-  useEffect(() => {
-    setRandomPrompts(getRandomPrompts());
-  }, [getRandomPrompts]);
-
-  // Redirect to app details page if appId is present
-  useEffect(() => {
-    if (appId) {
-      navigate({ to: "/app-details", search: { appId } });
+  const features = [
+    {
+      icon: Zap,
+      title: 'Builder Visuel',
+      description: 'Créez des apps avec drag & drop, sans code',
+      color: 'from-blue-500 to-blue-600'
+    },
+    {
+      icon: Code,
+      title: 'Code en Direct',
+      description: 'Voir le code React généré en temps réel',
+      color: 'from-green-500 to-green-600'
+    },
+    {
+      icon: Palette,
+      title: 'Design System',
+      description: 'Composants pré-stylés et personnalisables',
+      color: 'from-purple-500 to-purple-600'
+    },
+    {
+      icon: Rocket,
+      title: 'Export Instantané',
+      description: 'Téléchargez votre code prêt à déployer',
+      color: 'from-orange-500 to-orange-600'
     }
-  }, [appId, navigate]);
+  ];
 
-  const handleSubmit = async (options?: HomeSubmitOptions) => {
-    const attachments = options?.attachments || [];
-
-    if (!inputValue.trim() && attachments.length === 0) return;
-
-    try {
-      setIsLoading(true);
-      // Create the chat and navigate
-      const result = await IpcClient.getInstance().createApp({
-        name: generateCuteAppName(),
-      });
-      if (
-        settings?.selectedTemplateId &&
-        NEON_TEMPLATE_IDS.has(settings.selectedTemplateId)
-      ) {
-        await neonTemplateHook({
-          appId: result.app.id,
-          appName: result.app.name,
-        });
-      }
-
-      // Stream the message with attachments
-      streamMessage({
-        prompt: inputValue,
-        chatId: result.chatId,
-        attachments,
-      });
-      await new Promise((resolve) =>
-        setTimeout(resolve, settings?.isTestMode ? 0 : 2000),
-      );
-
-      setInputValue("");
-      setSelectedAppId(result.app.id);
-      setIsPreviewOpen(false);
-      await refreshApps(); // Ensure refreshApps is awaited if it's async
-      await invalidateAppQuery(queryClient, { appId: result.app.id });
-      posthog.capture("home:chat-submit");
-      navigate({ to: "/chat", search: { id: result.chatId } });
-    } catch (error) {
-      console.error("Failed to create chat:", error);
-      showError("Failed to create app. " + (error as any).toString());
-      setIsLoading(false); // Ensure loading state is reset on error
+  const templates = [
+    {
+      name: 'Landing Page',
+      description: 'Page d\'accueil moderne',
+      preview: '🚀',
+      category: 'Web'
+    },
+    {
+      name: 'Dashboard',
+      description: 'Interface d\'administration',
+      preview: '📊',
+      category: 'App'
+    },
+    {
+      name: 'E-commerce',
+      description: 'Boutique en ligne',
+      preview: '🛒',
+      category: 'Commerce'
+    },
+    {
+      name: 'Portfolio',
+      description: 'Site vitrine personnel',
+      preview: '👤',
+      category: 'Portfolio'
     }
-    // No finally block needed for setIsLoading(false) here if navigation happens on success
-  };
+  ];
 
-  // Loading overlay for app creation
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center max-w-3xl m-auto p-8">
-        <div className="w-full flex flex-col items-center">
-          {/* Loading Spinner */}
-          <div className="relative w-24 h-24 mb-8">
-            <div className="absolute top-0 left-0 w-full h-full border-8 border-gray-200 dark:border-gray-700 rounded-full"></div>
-            <div className="absolute top-0 left-0 w-full h-full border-8 border-t-primary rounded-full animate-spin"></div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Créez des Apps
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {' '}en Minutes
+              </span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Le builder d'applications le plus simple au monde. 
+              Glissez, déposez, et déployez. Aucun code requis.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="text-lg px-8 py-4"
+                onClick={() => navigate({ to: '/builder' })}
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Commencer Gratuitement
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg px-8 py-4"
+              >
+                <Play className="w-5 h-5 mr-2" />
+                Voir la Démo
+              </Button>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">
-            Building your app
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-8">
-            We're setting up your app with AI magic. <br />
-            This might take a moment...
-          </p>
         </div>
       </div>
-    );
-  }
 
-  // Main Home Page Content
-  return (
-    <div className="flex flex-col items-center justify-center max-w-3xl m-auto p-8">
-      {/* SetupBanner removed - web-only interface */}
-
-      <div className="w-full">
-        <ImportAppButton />
-        <HomeChatInput onSubmit={handleSubmit} />
-
-        <div className="flex flex-col gap-4 mt-4">
-          <div className="flex flex-wrap gap-4 justify-center">
-            {randomPrompts.map((item, index) => (
-              <button
-                type="button"
-                key={index}
-                onClick={() => setInputValue(`Build me a ${item.label}`)}
-                className="flex items-center gap-3 px-4 py-2 rounded-xl border border-gray-200
-                           bg-white/50 backdrop-blur-sm
-                           transition-all duration-200
-                           hover:bg-white hover:shadow-md hover:border-gray-300
-                           active:scale-[0.98]
-                           dark:bg-gray-800/50 dark:border-gray-700
-                           dark:hover:bg-gray-800 dark:hover:border-gray-600"
-              >
-                <span className="text-gray-700 dark:text-gray-300">
-                  {item.icon}
-                </span>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {item.label}
-                </span>
-              </button>
+      {/* Features Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Pourquoi choisir notre Builder ?
+            </h2>
+            <p className="text-xl text-gray-600">
+              Tout ce dont vous avez besoin pour créer des applications professionnelles
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-r ${feature.color} flex items-center justify-center mb-4`}>
+                    <feature.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{feature.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
-
-          <button
-            type="button"
-            onClick={() => setRandomPrompts(getRandomPrompts())}
-            className="self-center flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200
-                       bg-white/50 backdrop-blur-sm
-                       transition-all duration-200
-                       hover:bg-white hover:shadow-md hover:border-gray-300
-                       active:scale-[0.98]
-                       dark:bg-gray-800/50 dark:border-gray-700
-                       dark:hover:bg-gray-800 dark:hover:border-gray-600"
-          >
-            <svg
-              className="w-5 h-5 text-gray-700 dark:text-gray-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              More ideas
-            </span>
-          </button>
         </div>
       </div>
-      <PrivacyBanner />
 
-      {/* Release Notes Dialog */}
-      <Dialog open={releaseNotesOpen} onOpenChange={setReleaseNotesOpen}>
-        <DialogContent className="max-w-4xl bg-(--docs-bg) pr-0 pt-4 pl-4 gap-1">
-          <DialogHeader>
-            <DialogTitle>What's new in v{appVersion}?</DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-10 top-2 focus-visible:ring-0 focus-visible:ring-offset-0"
-              onClick={() =>
-                window.open(
-                  releaseUrl.replace("?hideHeader=true&theme=" + theme, ""),
-                  "_blank",
-                )
-              }
-            >
-              <ExternalLink className="w-4 h-4" />
-            </Button>
-          </DialogHeader>
-          <div className="overflow-auto h-[70vh] flex flex-col ">
-            {releaseUrl && (
-              <div className="flex-1">
-                <iframe
-                  src={releaseUrl}
-                  className="w-full h-full border-0 rounded-lg"
-                  title={`Release notes for v${appVersion}`}
-                />
-              </div>
-            )}
+      {/* Templates Section */}
+      <div className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Templates Prêts à l'Emploi
+            </h2>
+            <p className="text-xl text-gray-600">
+              Commencez avec des designs professionnels
+            </p>
           </div>
-        </DialogContent>
-      </Dialog>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {templates.map((template, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardHeader>
+                  <div className="text-4xl mb-4">{template.preview}</div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle className="text-lg">{template.name}</CardTitle>
+                      <p className="text-sm text-gray-500">{template.category}</p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 text-sm">{template.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">10K+</div>
+              <div className="text-gray-600">Apps Créées</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-green-600 mb-2">50K+</div>
+              <div className="text-gray-600">Utilisateurs Actifs</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-purple-600 mb-2">99%</div>
+              <div className="text-gray-600">Satisfaction Client</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Prêt à Créer votre App ?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Rejoignez des milliers de développeurs qui créent des apps incroyables
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              variant="secondary"
+              className="text-lg px-8 py-4"
+              onClick={() => navigate({ to: '/builder' })}
+            >
+              <Rocket className="w-5 h-5 mr-2" />
+              Commencer Maintenant
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-blue-600"
+            >
+              <Download className="w-5 h-5 mr-2" />
+              Télécharger
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold mb-4">🚀 App Builder</h3>
+            <p className="text-gray-400 mb-6">
+              La plateforme de création d'applications la plus simple au monde
+            </p>
+            <div className="flex justify-center space-x-6">
+              <Button variant="ghost" className="text-gray-400 hover:text-white">
+                <Eye className="w-4 h-4 mr-2" />
+                Aperçu
+              </Button>
+              <Button variant="ghost" className="text-gray-400 hover:text-white">
+                <Code className="w-4 h-4 mr-2" />
+                Documentation
+              </Button>
+              <Button variant="ghost" className="text-gray-400 hover:text-white">
+                <Users className="w-4 h-4 mr-2" />
+                Communauté
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

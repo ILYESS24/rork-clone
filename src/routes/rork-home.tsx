@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import RorkHomePage from "@/pages/rork-home";
+import { createFileRoute } from '@tanstack/react-router';
+import HomePage from '@/pages/home';
 
-export const Route = createFileRoute("/")({
-  component: RorkHomePage,
+export const Route = createFileRoute('/')({
+  component: HomePage,
 });

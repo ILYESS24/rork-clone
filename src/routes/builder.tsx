@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { RorkAppBuilder } from "@/components/rork-platform/RorkAppBuilder";
+import { createFileRoute } from '@tanstack/react-router';
+import AppBuilder from '@/pages/builder';
 
-export const Route = createFileRoute("/builder")({
-  component: RorkAppBuilder,
+export const Route = createFileRoute('/builder')({
+  component: AppBuilder,
 });
