@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { Link, useLocation } from 'react-router-dom'; // Using TanStack Router instead
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import { 
   Home, 
   Store, 
@@ -13,8 +13,12 @@ import {
   Code,
   Palette,
   Layers,
-  Zap
+  Zap,
+  LogOut,
+  Crown,
+  ChevronDown
 } from 'lucide-react';
+import { useAuth } from '@/components/auth/AuthModal';
 
 interface NavigationProps {
   currentUser?: {
@@ -28,6 +32,8 @@ export function RorkNavigation({ currentUser }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
@@ -39,8 +45,16 @@ export function RorkNavigation({ currentUser }: NavigationProps) {
   const userMenuItems = [
     { name: 'Profile', href: '/profile', icon: User },
     { name: 'Settings', href: '/settings', icon: Settings },
-    { name: 'Sign out', href: '/logout', icon: null, divider: true }
+    { name: 'Sign out', action: () => logout(), icon: LogOut, divider: true }
   ];
+
+  const handleAuthAction = () => {
+    if (isAuthenticated) {
+      navigate({ to: '/profile' });
+    } else {
+      navigate({ to: '/auth' });
+    }
+  };
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -114,36 +128,70 @@ export function RorkNavigation({ currentUser }: NavigationProps) {
             )}
 
             {/* User Menu */}
-            {currentUser ? (
+            {isAuthenticated && user ? (
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center space-x-2 p-1 rounded-lg hover:bg-gray-50"
                 >
-                  <img
-                    src={currentUser.avatar}
-                    alt={currentUser.name}
-                    className="w-8 h-8 rounded-full border-2 border-gray-200"
-                  />
+                  <div className="relative">
+                    <img
+                      src={user.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face'}
+                      alt={user.name}
+                      className="w-8 h-8 rounded-full border-2 border-gray-200"
+                    />
+                    {user.plan === 'Pro' && (
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                        <Crown className="w-2 h-2 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <span className="hidden md:block text-sm font-medium text-gray-700">
+                    {user.name}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
                 </button>
 
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
-                      <p className="text-xs text-gray-500">View profile</p>
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <div className="flex items-center mt-1">
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                          user.plan === 'Pro' 
+                            ? 'bg-gradient-to-r from-yellow-100 to-orange-100 text-yellow-800' 
+                            : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          {user.plan === 'Pro' && <Crown className="w-3 h-3 mr-1" />}
+                          {user.plan} Plan
+                        </span>
+                      </div>
                     </div>
                     {userMenuItems.map((item, index) => (
                       <div key={index}>
                         {item.divider && <div className="border-t border-gray-100 my-1" />}
-                        <Link
-                          to={item.href}
-                          className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          onClick={() => setIsUserMenuOpen(false)}
-                        >
-                          {item.icon && <item.icon className="w-4 h-4" />}
-                          <span>{item.name}</span>
-                        </Link>
+                        {item.action ? (
+                          <button
+                            onClick={() => {
+                              item.action?.();
+                              setIsUserMenuOpen(false);
+                            }}
+                            className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full text-left"
+                          >
+                            {item.icon && <item.icon className="w-4 h-4" />}
+                            <span>{item.name}</span>
+                          </button>
+                        ) : (
+                          <Link
+                            to={item.href}
+                            className="flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            {item.icon && <item.icon className="w-4 h-4" />}
+                            <span>{item.name}</span>
+                          </Link>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -151,18 +199,18 @@ export function RorkNavigation({ currentUser }: NavigationProps) {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link
-                  to="/login"
+                <button
+                  onClick={handleAuthAction}
                   className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
                 >
                   Sign in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                </button>
+                <button
+                  onClick={() => navigate({ to: '/auth' })}
+                  className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium"
                 >
-                  Sign up
-                </Link>
+                  Get Started
+                </button>
               </div>
             )}
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Filter, Star, Eye, Download, Heart, ExternalLink, TrendingUp, Clock, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Filter, Star, Eye, Download, Heart, ExternalLink, TrendingUp, Clock, Users, ShoppingCart, Crown, Zap, Award, Bookmark, Share2, MessageCircle, ThumbsUp, Tag, Calendar, ArrowUp } from 'lucide-react';
 
 interface MarketplaceApp {
   id: string;
@@ -20,6 +20,18 @@ interface MarketplaceApp {
   trending: boolean;
   createdAt: string;
   updatedAt: string;
+  premium: boolean;
+  reviews: number;
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+  estimatedTime: string;
+  lastUpdated: string;
+  version: string;
+  compatibility: string[];
+  support: boolean;
+  documentation: boolean;
+  sourceCode: boolean;
+  customization: boolean;
+  deployment: boolean;
 }
 
 export function RorkMarketplace() {
@@ -27,6 +39,12 @@ export function RorkMarketplace() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('trending');
   const [priceFilter, setPriceFilter] = useState('all');
+  const [difficultyFilter, setDifficultyFilter] = useState('all');
+  const [featureFilter, setFeatureFilter] = useState('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [cart, setCart] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const categories = [
     { id: 'all', name: 'All Categories', icon: '📦' },
@@ -58,7 +76,19 @@ export function RorkMarketplace() {
       featured: true,
       trending: true,
       createdAt: '2024-01-15',
-      updatedAt: '2024-01-20'
+      updatedAt: '2024-01-20',
+      premium: true,
+      reviews: 156,
+      difficulty: 'Intermediate',
+      estimatedTime: '2-3 hours',
+      lastUpdated: '2024-01-20',
+      version: '2.1.0',
+      compatibility: ['React 18+', 'Node.js 16+', 'Modern Browsers'],
+      support: true,
+      documentation: true,
+      sourceCode: true,
+      customization: true,
+      deployment: true
     },
     {
       id: '2',
@@ -370,12 +400,109 @@ export function RorkMarketplace() {
         </div>
       </div>
 
+      {/* Advanced Filters Section */}
+      {showFilters && (
+        <div className="px-6 py-4 bg-gray-50 border-t">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {/* Difficulty Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
+                <select 
+                  value={difficultyFilter} 
+                  onChange={(e) => setDifficultyFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="all">All Levels</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </div>
+
+              {/* Features Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Features</label>
+                <select 
+                  value={featureFilter} 
+                  onChange={(e) => setFeatureFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="all">All Features</option>
+                  <option value="support">With Support</option>
+                  <option value="documentation">With Documentation</option>
+                  <option value="sourceCode">With Source Code</option>
+                  <option value="deployment">With Deployment</option>
+                </select>
+              </div>
+
+              {/* View Mode Toggle */}
+              <div className="flex items-end">
+                <div className="flex bg-gray-200 rounded-lg p-1">
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      viewMode === 'grid' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'
+                    }`}
+                  >
+                    Grid
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      viewMode === 'list' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600'
+                    }`}
+                  >
+                    List
+                  </button>
+                </div>
+              </div>
+
+              {/* Cart Summary */}
+              <div className="flex items-end">
+                <div className="flex items-center space-x-2 bg-blue-50 px-3 py-2 rounded-lg">
+                  <ShoppingCart className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm font-medium text-blue-900">
+                    {cart.length} in cart
+                  </span>
+                  {cart.length > 0 && (
+                    <button className="text-xs bg-blue-600 text-white px-2 py-1 rounded">
+                      Checkout
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* All Apps Section */}
       <div className="px-6 py-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">All Apps</h2>
-            <span className="text-gray-500">{sortedApps.length} apps found</span>
+            <div className="flex items-center space-x-4">
+              <h2 className="text-2xl font-bold text-gray-900">All Apps</h2>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center space-x-2 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                <Filter className="w-4 h-4" />
+                <span>Filters</span>
+              </button>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-500">{sortedApps.length} apps found</span>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setFavorites([])}
+                  className="flex items-center space-x-1 text-sm text-gray-600 hover:text-gray-900"
+                >
+                  <Bookmark className="w-4 h-4" />
+                  <span>{favorites.length} saved</span>
+                </button>
+              </div>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -394,10 +521,26 @@ export function RorkMarketplace() {
                       </span>
                     )}
                   </div>
-                  <div className="absolute top-2 right-2">
-                    <button className="p-1.5 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
-                      <Heart className="w-3 h-3 text-gray-600" />
+                  <div className="absolute top-2 right-2 flex space-x-1">
+                    <button 
+                      onClick={() => {
+                        if (favorites.includes(app.id)) {
+                          setFavorites(favorites.filter(id => id !== app.id));
+                        } else {
+                          setFavorites([...favorites, app.id]);
+                        }
+                      }}
+                      className={`p-1.5 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors ${
+                        favorites.includes(app.id) ? 'text-red-500' : 'text-gray-600'
+                      }`}
+                    >
+                      <Heart className={`w-3 h-3 ${favorites.includes(app.id) ? 'fill-current' : ''}`} />
                     </button>
+                    {app.premium && (
+                      <div className="p-1.5 bg-yellow-400/90 backdrop-blur-sm rounded-full">
+                        <Crown className="w-3 h-3 text-yellow-800" />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -436,10 +579,51 @@ export function RorkMarketplace() {
                     </span>
                   </div>
 
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {app.support && <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Support</span>}
+                    {app.documentation && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Docs</span>}
+                    {app.sourceCode && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Source</span>}
+                    {app.deployment && <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Deploy</span>}
+                  </div>
+
+                  {/* Difficulty & Time */}
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                    <span className={`px-2 py-1 rounded-full ${
+                      app.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
+                      app.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
+                    }`}>
+                      {app.difficulty}
+                    </span>
+                    <span className="flex items-center">
+                      <Clock className="w-3 h-3 mr-1" />
+                      {app.estimatedTime}
+                    </span>
+                  </div>
+
                   {/* Actions */}
-                  <button className="w-full px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 text-sm font-medium">
-                    {app.isFree ? 'Use Template' : 'Buy Now'}
-                  </button>
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={() => {
+                        if (cart.includes(app.id)) {
+                          setCart(cart.filter(id => id !== app.id));
+                        } else {
+                          setCart([...cart, app.id]);
+                        }
+                      }}
+                      className={`flex-1 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium ${
+                        cart.includes(app.id) 
+                          ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
+                          : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'
+                      }`}
+                    >
+                      {cart.includes(app.id) ? 'In Cart' : (app.isFree ? 'Use Template' : 'Add to Cart')}
+                    </button>
+                    <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                      <ExternalLink className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -452,6 +636,115 @@ export function RorkMarketplace() {
               <p className="text-gray-600">Try adjusting your search or filters</p>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Analytics Dashboard */}
+      <div className="px-6 py-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Marketplace Analytics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Total Apps</p>
+                  <p className="text-2xl font-bold text-gray-900">{apps.length}</p>
+                </div>
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <Zap className="w-6 h-6 text-blue-600" />
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-green-600">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                <span>+12% this month</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Premium Apps</p>
+                  <p className="text-2xl font-bold text-gray-900">{apps.filter(app => app.premium).length}</p>
+                </div>
+                <div className="p-3 bg-yellow-100 rounded-full">
+                  <Crown className="w-6 h-6 text-yellow-600" />
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-green-600">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                <span>+8% this month</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Total Downloads</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {apps.reduce((sum, app) => sum + app.downloads, 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="p-3 bg-green-100 rounded-full">
+                  <Download className="w-6 h-6 text-green-600" />
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-green-600">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                <span>+24% this month</span>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Active Authors</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {new Set(apps.map(app => app.author)).size}
+                  </p>
+                </div>
+                <div className="p-3 bg-purple-100 rounded-full">
+                  <Users className="w-6 h-6 text-purple-600" />
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-green-600">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                <span>+15% this month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="px-6 py-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h3 className="text-xl font-bold text-gray-900 mb-6">Recent Activity</h3>
+          <div className="space-y-4">
+            {apps.slice(0, 5).map((app, index) => (
+              <div key={app.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                  <div className="text-xl">🚀</div>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-medium text-gray-900">{app.name}</h4>
+                  <p className="text-sm text-gray-600">by {app.author}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-900">{app.downloads} downloads</p>
+                  <p className="text-xs text-gray-500">{app.updatedAt}</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center">
+                    <Star className="w-4 h-4 text-yellow-400 mr-1" />
+                    <span className="text-sm font-medium">{app.rating}</span>
+                  </div>
+                  <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+                    <Heart className="w-4 h-4 text-gray-400" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

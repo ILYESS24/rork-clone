@@ -6,6 +6,7 @@ import { Route as BuilderRoute } from "./routes/builder";
 import { Route as AIBuilderRoute } from "./routes/ai-builder";
 import { Route as DashboardRoute } from "./routes/dashboard";
 import { Route as ProfileRoute } from "./routes/profile";
+import { Route as AuthRoute } from "./routes/auth";
 import { NotFoundRedirect } from "./components/NotFoundRedirect";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
@@ -16,6 +17,7 @@ const routeTree = rootRoute.addChildren([
   AIBuilderRoute,
   DashboardRoute,
   ProfileRoute,
+  AuthRoute,
 ]);
 
 export const router = createRouter({
