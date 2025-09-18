@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple - Rork Platform</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 10px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+        }
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+        .success {
+            background: rgba(81, 207, 102, 0.3);
+        }
+        .error {
+            background: rgba(255, 107, 107, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Rork Platform</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 30px;">
+            Test Simple - Vérification du fonctionnement
+        </p>
+        
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+            <a href="/" class="button">🏠 Accueil</a>
+            <a href="/builder" class="button">🔧 Builder</a>
+            <a href="/marketplace" class="button">🏪 Marketplace</a>
+            <a href="/analytics" class="button">📊 Analytics</a>
+            <a href="/teams" class="button">👥 Teams</a>
+            <a href="/admin" class="button">🛡️ Admin</a>
+        </div>
+        
+        <div id="status" class="status">
+            <h3>🔍 Diagnostic en cours...</h3>
+            <div id="diagnostic-results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Diagnostic simple
+        function diagnosticSimple() {
+            const resultsDiv = document.getElementById('diagnostic-results');
+            const statusDiv = document.getElementById('status');
+            
+            let results = [];
+            
+            // Test 1: Élément root
+            const rootElement = document.getElementById('root');
+            if (rootElement) {
+                results.push('✅ Élément root trouvé');
+            } else {
+                results.push('❌ Élément root manquant');
+            }
+            
+            // Test 2: Scripts chargés
+            const scripts = document.querySelectorAll('script');
+            results.push(`📜 ${scripts.length} script(s) chargé(s)`);
+            
+            // Test 3: Styles chargés
+            const styles = document.querySelectorAll('link[rel="stylesheet"]');
+            results.push(`🎨 ${styles.length} style(s) chargé(s)`);
+            
+            // Test 4: Console disponible
+            if (typeof console !== 'undefined') {
+                results.push('✅ Console disponible');
+            } else {
+                results.push('❌ Console non disponible');
+            }
+            
+            // Test 5: URL actuelle
+            results.push(`🌐 URL: ${window.location.href}`);
+            
+            // Afficher les résultats
+            resultsDiv.innerHTML = results.map(result => `<p>${result}</p>`).join('');
+            
+            // Changer le statut
+            statusDiv.className = 'status success';
+            statusDiv.querySelector('h3').textContent = '✅ Diagnostic terminé';
+        }
+        
+        // Exécuter le diagnostic
+        setTimeout(diagnosticSimple, 1000);
+        
+        // Test de redirection après 3 secondes
+        setTimeout(() => {
+            console.log('🔄 Test de redirection vers la page principale...');
+            // Ne pas rediriger automatiquement, laisser l'utilisateur choisir
+        }, 3000);
+    </script>
+</body>
+</html>

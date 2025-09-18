@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 DIAGNOSTIC PAGE BLANCHE - Rork Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .diagnostic-item {
+            background: rgba(255,255,255,0.2);
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+        }
+        .success {
+            border-left-color: #51cf66;
+        }
+        .warning {
+            border-left-color: #ffd43b;
+        }
+        .error {
+            border-left-color: #ff6b6b;
+        }
+        .test-button {
+            background: #51cf66;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #40c057;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(0,0,0,0.3);
+        }
+        .error-result {
+            background: rgba(255, 107, 107, 0.3);
+        }
+        .success-result {
+            background: rgba(81, 207, 102, 0.3);
+        }
+        .code {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 DIAGNOSTIC COMPLET - PAGE BLANCHE</h1>
+        <p><strong>Date:</strong> <span id="current-date"></span></p>
+        <p><strong>URL:</strong> <span id="current-url"></span></p>
+
+        <div class="diagnostic-item">
+            <h3>1. 🔍 VÉRIFICATION ÉLÉMENT ROOT</h3>
+            <button class="test-button" onclick="checkRootElement()">Vérifier l'élément root</button>
+            <div id="root-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>2. 📜 VÉRIFICATION SCRIPTS CHARGÉS</h3>
+            <button class="test-button" onclick="checkScripts()">Vérifier les scripts</button>
+            <div id="scripts-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>3. 🎨 VÉRIFICATION STYLES CHARGÉS</h3>
+            <button class="test-button" onclick="checkStyles()">Vérifier les styles</button>
+            <div id="styles-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>4. ⚠️ VÉRIFICATION ERREURS JAVASCRIPT</h3>
+            <button class="test-button" onclick="checkErrors()">Vérifier les erreurs</button>
+            <div id="errors-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>5. 🌐 VÉRIFICATION RÉSEAU</h3>
+            <button class="test-button" onclick="checkNetwork()">Vérifier le réseau</button>
+            <div id="network-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>6. 🔧 TEST REACT MANUEL</h3>
+            <button class="test-button" onclick="testReact()">Tester React manuellement</button>
+            <div id="react-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>7. 🚀 SOLUTION D'URGENCE</h3>
+            <button class="test-button" onclick="emergencyFix()">APPLIQUER SOLUTION D'URGENCE</button>
+            <div id="emergency-result" class="result"></div>
+        </div>
+
+        <div class="diagnostic-item">
+            <h3>8. 📊 RÉSUMÉ DIAGNOSTIC</h3>
+            <button class="test-button" onclick="generateReport()">Générer le rapport</button>
+            <div id="report-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales pour stocker les résultats
+        let diagnosticResults = {
+            rootElement: null,
+            scripts: [],
+            styles: [],
+            errors: [],
+            network: [],
+            reactTest: null,
+            emergencyApplied: false
+        };
+
+        // Initialisation
+        document.getElementById('current-date').textContent = new Date().toLocaleString();
+        document.getElementById('current-url').textContent = window.location.href;
+
+        function checkRootElement() {
+            const rootElement = document.getElementById('root');
+            const resultDiv = document.getElementById('root-result');
+            
+            if (rootElement) {
+                diagnosticResults.rootElement = {
+                    exists: true,
+                    innerHTML: rootElement.innerHTML,
+                    className: rootElement.className,
+                    styles: window.getComputedStyle(rootElement)
+                };
+                
+                resultDiv.className = 'result success-result';
+                resultDiv.innerHTML = `
+                    <strong>✅ Élément root trouvé</strong><br>
+                    <div class="code">
+                        InnerHTML: "${rootElement.innerHTML}"<br>
+                        Classes: "${rootElement.className}"<br>
+                        Visible: ${rootElement.offsetWidth > 0 ? 'Oui' : 'Non'}<br>
+                        Hauteur: ${rootElement.offsetHeight}px<br>
+                        Largeur: ${rootElement.offsetWidth}px
+                    </div>
+                `;
+            } else {
+                diagnosticResults.rootElement = { exists: false };
+                resultDiv.className = 'result error-result';
+                resultDiv.innerHTML = '<strong>❌ Élément root NON TROUVÉ !</strong><br>Le div avec id="root" n\'existe pas dans le DOM.';
+            }
+        }
+
+        function checkScripts() {
+            const scripts = document.querySelectorAll('script');
+            const resultDiv = document.getElementById('scripts-result');
+            diagnosticResults.scripts = [];
+            
+            let html = '<strong>📜 Scripts trouvés:</strong><br>';
+            
+            scripts.forEach((script, index) => {
+                const scriptInfo = {
+                    src: script.src,
+                    type: script.type,
+                    async: script.async,
+                    defer: script.defer
+                };
+                diagnosticResults.scripts.push(scriptInfo);
+                
+                html += `<div class="code">
+                    ${index + 1}. ${script.src || 'Script inline'}<br>
+                    Type: ${script.type || 'text/javascript'}<br>
+                    Async: ${script.async ? 'Oui' : 'Non'}<br>
+                    Defer: ${script.defer ? 'Oui' : 'Non'}
+                </div>`;
+            });
+            
+            resultDiv.className = 'result ' + (scripts.length > 0 ? 'success-result' : 'error-result');
+            resultDiv.innerHTML = html;
+        }
+
+        function checkStyles() {
+            const styles = document.querySelectorAll('link[rel="stylesheet"]');
+            const resultDiv = document.getElementById('styles-result');
+            diagnosticResults.styles = [];
+            
+            let html = '<strong>🎨 Styles trouvés:</strong><br>';
+            
+            styles.forEach((style, index) => {
+                const styleInfo = {
+                    href: style.href,
+                    media: style.media
+                };
+                diagnosticResults.styles.push(styleInfo);
+                
+                html += `<div class="code">
+                    ${index + 1}. ${style.href}<br>
+                    Media: ${style.media || 'all'}
+                </div>`;
+            });
+            
+            resultDiv.className = 'result ' + (styles.length > 0 ? 'success-result' : 'error-result');
+            resultDiv.innerHTML = html;
+        }
+
+        function checkErrors() {
+            const resultDiv = document.getElementById('errors-result');
+            diagnosticResults.errors = [];
+            
+            // Capturer les erreurs existantes
+            window.addEventListener('error', function(e) {
+                diagnosticResults.errors.push({
+                    message: e.message,
+                    filename: e.filename,
+                    lineno: e.lineno,
+                    colno: e.colno,
+                    error: e.error
+                });
+            });
+            
+            // Capturer les promesses rejetées
+            window.addEventListener('unhandledrejection', function(e) {
+                diagnosticResults.errors.push({
+                    type: 'promise',
+                    reason: e.reason
+                });
+            });
+            
+            let html = '<strong>⚠️ Erreurs détectées:</strong><br>';
+            
+            if (diagnosticResults.errors.length === 0) {
+                html += '<div class="code">Aucune erreur JavaScript détectée pour le moment.</div>';
+                resultDiv.className = 'result success-result';
+            } else {
+                diagnosticResults.errors.forEach((error, index) => {
+                    html += `<div class="code">
+                        Erreur ${index + 1}:<br>
+                        Message: ${error.message}<br>
+                        Fichier: ${error.filename}<br>
+                        Ligne: ${error.lineno}
+                    </div>`;
+                });
+                resultDiv.className = 'result error-result';
+            }
+            
+            resultDiv.innerHTML = html;
+        }
+
+        function checkNetwork() {
+            const resultDiv = document.getElementById('network-result');
+            diagnosticResults.network = [];
+            
+            // Vérifier les ressources chargées
+            const resources = performance.getEntriesByType('resource');
+            let html = '<strong>🌐 Ressources chargées:</strong><br>';
+            
+            resources.forEach((resource, index) => {
+                const resourceInfo = {
+                    name: resource.name,
+                    duration: resource.duration,
+                    size: resource.transferSize,
+                    status: 'loaded'
+                };
+                diagnosticResults.network.push(resourceInfo);
+                
+                html += `<div class="code">
+                    ${index + 1}. ${resource.name.split('/').pop()}<br>
+                    Durée: ${Math.round(resource.duration)}ms<br>
+                    Taille: ${resource.transferSize} bytes
+                </div>`;
+            });
+            
+            resultDiv.className = 'result success-result';
+            resultDiv.innerHTML = html;
+        }
+
+        function testReact() {
+            const resultDiv = document.getElementById('react-result');
+            
+            try {
+                // Test si React est disponible
+                if (typeof React !== 'undefined') {
+                    diagnosticResults.reactTest = { available: true };
+                    resultDiv.className = 'result success-result';
+                    resultDiv.innerHTML = '<strong>✅ React est disponible</strong><br>React est chargé et accessible.';
+                } else {
+                    diagnosticResults.reactTest = { available: false };
+                    resultDiv.className = 'result error-result';
+                    resultDiv.innerHTML = '<strong>❌ React NON DISPONIBLE</strong><br>React n\'est pas chargé ou accessible.';
+                }
+            } catch (error) {
+                diagnosticResults.reactTest = { available: false, error: error.message };
+                resultDiv.className = 'result error-result';
+                resultDiv.innerHTML = `<strong>❌ Erreur lors du test React:</strong><br>${error.message}`;
+            }
+        }
+
+        function emergencyFix() {
+            const resultDiv = document.getElementById('emergency-result');
+            
+            try {
+                // Solution d'urgence : créer du contenu dans root
+                let rootElement = document.getElementById('root');
+                
+                if (!rootElement) {
+                    // Créer l'élément root s'il n'existe pas
+                    rootElement = document.createElement('div');
+                    rootElement.id = 'root';
+                    document.body.appendChild(rootElement);
+                }
+                
+                // Ajouter du contenu d'urgence
+                rootElement.innerHTML = `
+                    <div style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 100vh;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        padding: 20px;
+                    ">
+                        <div>
+                            <h1>🚀 Rork Platform</h1>
+                            <p>Application en cours de chargement...</p>
+                            <p>Si cette page persiste, il y a un problème avec le JavaScript.</p>
+                            <div style="margin-top: 30px;">
+                                <a href="/builder" style="
+                                    display: inline-block;
+                                    padding: 12px 24px;
+                                    background: white;
+                                    color: #667eea;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    margin: 5px;
+                                    font-weight: bold;
+                                ">🔧 Builder</a>
+                                <a href="/marketplace" style="
+                                    display: inline-block;
+                                    padding: 12px 24px;
+                                    background: white;
+                                    color: #667eea;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    margin: 5px;
+                                    font-weight: bold;
+                                ">🏪 Marketplace</a>
+                                <a href="/analytics" style="
+                                    display: inline-block;
+                                    padding: 12px 24px;
+                                    background: white;
+                                    color: #667eea;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    margin: 5px;
+                                    font-weight: bold;
+                                ">📊 Analytics</a>
+                            </div>
+                            <div style="margin-top: 20px; font-size: 14px; opacity: 0.8;">
+                                <p>🔧 Solution d'urgence appliquée - ${new Date().toLocaleTimeString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                diagnosticResults.emergencyApplied = true;
+                resultDiv.className = 'result success-result';
+                resultDiv.innerHTML = '<strong>✅ SOLUTION D\'URGENCE APPLIQUÉE</strong><br>Contenu d\'urgence ajouté à l\'élément root.';
+                
+            } catch (error) {
+                resultDiv.className = 'result error-result';
+                resultDiv.innerHTML = `<strong>❌ Erreur lors de l'application de la solution:</strong><br>${error.message}`;
+            }
+        }
+
+        function generateReport() {
+            const resultDiv = document.getElementById('report-result');
+            
+            let report = '<strong>📊 RAPPORT DE DIAGNOSTIC</strong><br>';
+            report += `<div class="code">
+Date: ${new Date().toLocaleString()}<br>
+URL: ${window.location.href}<br><br>
+`;
+
+            // Résumé des résultats
+            report += 'RÉSUMÉ:<br>';
+            report += `• Élément root: ${diagnosticResults.rootElement?.exists ? '✅ Trouvé' : '❌ Manquant'}<br>`;
+            report += `• Scripts: ${diagnosticResults.scripts.length} trouvés<br>`;
+            report += `• Styles: ${diagnosticResults.styles.length} trouvés<br>`;
+            report += `• Erreurs: ${diagnosticResults.errors.length} détectées<br>`;
+            report += `• React: ${diagnosticResults.reactTest?.available ? '✅ Disponible' : '❌ Non disponible'}<br>`;
+            report += `• Solution d'urgence: ${diagnosticResults.emergencyApplied ? '✅ Appliquée' : '❌ Non appliquée'}<br>`;
+            
+            report += '</div>';
+            
+            // Recommandations
+            report += '<br><strong>🔧 RECOMMANDATIONS:</strong><br>';
+            report += '<div class="code">';
+            
+            if (!diagnosticResults.rootElement?.exists) {
+                report += '1. ❌ CRITIQUE: L\'élément root est manquant<br>';
+            }
+            if (diagnosticResults.scripts.length === 0) {
+                report += '2. ❌ CRITIQUE: Aucun script JavaScript chargé<br>';
+            }
+            if (diagnosticResults.errors.length > 0) {
+                report += '3. ⚠️ ATTENTION: Erreurs JavaScript détectées<br>';
+            }
+            if (!diagnosticResults.reactTest?.available) {
+                report += '4. ❌ CRITIQUE: React n\'est pas disponible<br>';
+            }
+            
+            if (diagnosticResults.rootElement?.exists && diagnosticResults.scripts.length > 0 && diagnosticResults.reactTest?.available) {
+                report += '✅ Tous les éléments de base sont présents. Le problème peut venir du routage ou de la logique React.';
+            }
+            
+            report += '</div>';
+            
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = report;
+        }
+
+        // Auto-exécuter les tests de base
+        setTimeout(() => {
+            checkRootElement();
+            checkScripts();
+            checkStyles();
+            checkErrors();
+            checkNetwork();
+            testReact();
+        }, 1000);
+    </script>
+</body>
+</html>

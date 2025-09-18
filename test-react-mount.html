@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test React Mount - Rork Platform</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #root {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .loading {
+            font-size: 18px;
+        }
+        .error {
+            background: rgba(255, 107, 107, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+        .success {
+            background: rgba(81, 207, 102, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">
+            <h1>🚀 Rork Platform</h1>
+            <p>Test de montage React...</p>
+            <div id="status">Chargement...</div>
+        </div>
+    </div>
+
+    <script>
+        console.log('🔍 TEST REACT MOUNT - Début');
+        
+        // Fonction de test React
+        function testReactMount() {
+            const statusDiv = document.getElementById('status');
+            const rootDiv = document.getElementById('root');
+            
+            try {
+                // Test 1: Vérifier que l'élément root existe
+                if (!rootDiv) {
+                    throw new Error('Élément root non trouvé');
+                }
+                
+                statusDiv.innerHTML = '✅ Élément root trouvé<br>';
+                
+                // Test 2: Vérifier que React est disponible
+                if (typeof React === 'undefined') {
+                    throw new Error('React non disponible');
+                }
+                
+                statusDiv.innerHTML += '✅ React disponible<br>';
+                
+                // Test 3: Vérifier ReactDOM
+                if (typeof ReactDOM === 'undefined') {
+                    throw new Error('ReactDOM non disponible');
+                }
+                
+                statusDiv.innerHTML += '✅ ReactDOM disponible<br>';
+                
+                // Test 4: Essayer de monter un composant simple
+                const TestComponent = () => {
+                    return React.createElement('div', {
+                        style: {
+                            padding: '20px',
+                            background: 'rgba(255,255,255,0.1)',
+                            borderRadius: '10px',
+                            margin: '20px'
+                        }
+                    }, [
+                        React.createElement('h2', { key: 'title' }, '🎉 React fonctionne !'),
+                        React.createElement('p', { key: 'desc' }, 'Le montage React est réussi.'),
+                        React.createElement('div', { key: 'links' }, [
+                            React.createElement('a', {
+                                key: 'builder',
+                                href: '/builder',
+                                style: {
+                                    display: 'inline-block',
+                                    padding: '10px 20px',
+                                    background: 'white',
+                                    color: '#667eea',
+                                    textDecoration: 'none',
+                                    borderRadius: '5px',
+                                    margin: '5px',
+                                    fontWeight: 'bold'
+                                }
+                            }, '🔧 Builder'),
+                            React.createElement('a', {
+                                key: 'marketplace',
+                                href: '/marketplace',
+                                style: {
+                                    display: 'inline-block',
+                                    padding: '10px 20px',
+                                    background: 'white',
+                                    color: '#667eea',
+                                    textDecoration: 'none',
+                                    borderRadius: '5px',
+                                    margin: '5px',
+                                    fontWeight: 'bold'
+                                }
+                            }, '🏪 Marketplace')
+                        ])
+                    ]);
+                };
+                
+                // Monter le composant
+                const root = ReactDOM.createRoot(rootDiv);
+                root.render(React.createElement(TestComponent));
+                
+                statusDiv.innerHTML += '✅ Composant React monté avec succès<br>';
+                statusDiv.innerHTML += '<div class="success" style="margin-top: 20px;"><strong>🎉 TOUS LES TESTS RÉUSSIS !</strong><br>React fonctionne correctement.</div>';
+                
+                console.log('✅ TEST REACT MOUNT - Succès');
+                
+            } catch (error) {
+                console.error('❌ TEST REACT MOUNT - Erreur:', error);
+                
+                statusDiv.innerHTML = `<div class="error">
+                    <strong>❌ ERREUR DÉTECTÉE</strong><br>
+                    ${error.message}<br><br>
+                    <strong>Solutions possibles:</strong><br>
+                    • Vérifier que les scripts React sont chargés<br>
+                    • Vérifier la console pour plus d'erreurs<br>
+                    • Recharger la page<br>
+                    • Vérifier la configuration Vite
+                </div>`;
+            }
+        }
+        
+        // Attendre que la page soit chargée
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', testReactMount);
+        } else {
+            testReactMount();
+        }
+        
+        // Test de fallback après 5 secondes
+        setTimeout(() => {
+            const statusDiv = document.getElementById('status');
+            if (statusDiv && statusDiv.textContent.includes('Chargement...')) {
+                statusDiv.innerHTML = `<div class="error">
+                    <strong>⏰ TIMEOUT DÉTECTÉ</strong><br>
+                    React ne s'est pas chargé dans les 5 secondes.<br><br>
+                    <strong>Solutions:</strong><br>
+                    • Vérifier la console du navigateur<br>
+                    • Vérifier que le serveur de développement fonctionne<br>
+                    • Redémarrer le serveur avec: npm run dev
+                </div>`;
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
