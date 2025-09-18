@@ -3,6 +3,7 @@ import { rootRoute } from "./routes/root";
 import { Route as HomeRoute } from "./routes/rork-home";
 import { Route as MarketplaceRoute } from "./routes/marketplace";
 import { Route as BuilderRoute } from "./routes/builder";
+import { Route as AIBuilderRoute } from "./routes/ai-builder";
 import { Route as DashboardRoute } from "./routes/dashboard";
 import { Route as ProfileRoute } from "./routes/profile";
 import { NotFoundRedirect } from "./components/NotFoundRedirect";
@@ -12,6 +13,7 @@ const routeTree = rootRoute.addChildren([
   HomeRoute,
   MarketplaceRoute,
   BuilderRoute,
+  AIBuilderRoute,
   DashboardRoute,
   ProfileRoute,
 ]);

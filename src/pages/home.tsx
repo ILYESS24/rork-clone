@@ -13,13 +13,27 @@ import {
   ArrowRight,
   Play,
   Download,
-  Eye
+  Eye,
+  Brain,
+  Sparkles,
+  Lightning,
+  Shield,
+  Globe,
+  BarChart3,
+  Database,
+  Share2
 } from 'lucide-react';
 
 export default function HomePage() {
   const navigate = useNavigate();
 
   const features = [
+    {
+      icon: Brain,
+      title: 'IA Intégrée',
+      description: 'Génération automatique avec IA avancée',
+      color: 'from-purple-500 to-purple-600'
+    },
     {
       icon: Zap,
       title: 'Builder Visuel',
@@ -33,43 +47,67 @@ export default function HomePage() {
       color: 'from-green-500 to-green-600'
     },
     {
-      icon: Palette,
-      title: 'Design System',
-      description: 'Composants pré-stylés et personnalisables',
-      color: 'from-purple-500 to-purple-600'
+      icon: Rocket,
+      title: 'Déploiement Auto',
+      description: 'Déployez sur Vercel/Netlify en 1 clic',
+      color: 'from-orange-500 to-orange-600'
     },
     {
-      icon: Rocket,
-      title: 'Export Instantané',
-      description: 'Téléchargez votre code prêt à déployer',
-      color: 'from-orange-500 to-orange-600'
+      icon: BarChart3,
+      title: 'Analytics Intégrés',
+      description: 'Métriques et analytics en temps réel',
+      color: 'from-indigo-500 to-indigo-600'
+    },
+    {
+      icon: Shield,
+      title: 'Sécurité Enterprise',
+      description: 'Paiements Stripe, auth, et plus',
+      color: 'from-red-500 to-red-600'
     }
   ];
 
   const templates = [
     {
-      name: 'Landing Page',
-      description: 'Page d\'accueil moderne',
-      preview: '🚀',
-      category: 'Web'
-    },
-    {
-      name: 'Dashboard',
-      description: 'Interface d\'administration',
+      name: 'SaaS Dashboard',
+      description: 'Tableau de bord complet avec analytics',
       preview: '📊',
-      category: 'App'
+      category: 'SaaS',
+      features: ['Analytics', 'Users', 'Payments']
     },
     {
-      name: 'E-commerce',
-      description: 'Boutique en ligne',
+      name: 'E-commerce Store',
+      description: 'Boutique en ligne moderne',
       preview: '🛒',
-      category: 'Commerce'
+      category: 'E-commerce',
+      features: ['Products', 'Cart', 'Payments']
     },
     {
-      name: 'Portfolio',
-      description: 'Site vitrine personnel',
+      name: 'AI-Powered App',
+      description: 'Application avec IA intégrée',
+      preview: '🧠',
+      category: 'AI',
+      features: ['AI Chat', 'Generation', 'Smart Forms']
+    },
+    {
+      name: 'Startup Landing',
+      description: 'Page d\'accueil conversion-optimisée',
+      preview: '🚀',
+      category: 'Marketing',
+      features: ['Hero', 'Features', 'CTA']
+    },
+    {
+      name: 'Portfolio Pro',
+      description: 'Site vitrine professionnel',
       preview: '👤',
-      category: 'Portfolio'
+      category: 'Portfolio',
+      features: ['Gallery', 'Contact', 'Blog']
+    },
+    {
+      name: 'Mobile App',
+      description: 'Application mobile responsive',
+      preview: '📱',
+      category: 'Mobile',
+      features: ['Responsive', 'Touch', 'Native']
     }
   ];
 
@@ -80,23 +118,24 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Créez des Apps
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                {' '}en Minutes
+              L'App Builder du
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                {' '}Futur
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Le builder d'applications le plus simple au monde. 
-              Glissez, déposez, et déployez. Aucun code requis.
+              Créez des applications révolutionnaires avec IA. 
+              Templates professionnels, déploiement automatique, analytics intégrés.
+              <span className="font-semibold text-purple-600"> Aucun code requis.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="text-lg px-8 py-4"
-                onClick={() => navigate({ to: '/builder' })}
+                className="text-lg px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                onClick={() => navigate({ to: '/ai-builder' })}
               >
-                <Plus className="w-5 h-5 mr-2" />
-                Commencer Gratuitement
+                <Brain className="w-5 h-5 mr-2" />
+                Créer avec IA
               </Button>
               <Button 
                 size="lg" 
@@ -153,11 +192,20 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {templates.map((template, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
+              <Card key={index} className="hover:shadow-lg transition-all duration-300 cursor-pointer group hover:scale-105">
                 <CardHeader>
-                  <div className="text-4xl mb-4">{template.preview}</div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl">{template.preview}</div>
+                    <div className="flex space-x-1">
+                      {template.features.slice(0, 3).map((feature, idx) => (
+                        <span key={idx} className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                   <div className="flex justify-between items-start">
                     <div>
                       <CardTitle className="text-lg">{template.name}</CardTitle>
@@ -167,7 +215,14 @@ export default function HomePage() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 text-sm">{template.description}</p>
+                  <p className="text-gray-600 text-sm mb-3">{template.description}</p>
+                  <div className="flex flex-wrap gap-1">
+                    {template.features.map((feature, idx) => (
+                      <span key={idx} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             ))}
