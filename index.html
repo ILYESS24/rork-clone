@@ -16,8 +16,8 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #ffffff;
-      color: #000000;
+      background: #000000;
+      color: #ffffff;
       line-height: 1.6;
     }
 
@@ -33,14 +33,23 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px 0;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid #333;
     }
 
     .logo {
       font-size: 24px;
       font-weight: 700;
-      color: #000;
+      color: #fff;
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo::before {
+      content: "●";
+      color: #fff;
+      font-size: 16px;
     }
 
     .nav {
@@ -55,19 +64,19 @@
     }
 
     .nav-links a {
-      color: #666;
+      color: #ccc;
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s;
     }
 
     .nav-links a:hover {
-      color: #000;
+      color: #fff;
     }
 
     .get-credits-btn {
-      background: #f5f5f5;
-      color: #000;
+      background: #ff6b35;
+      color: #fff;
       padding: 8px 16px;
       border-radius: 8px;
       text-decoration: none;
@@ -79,7 +88,26 @@
     }
 
     .get-credits-btn:hover {
-      background: #e5e5e5;
+      background: #e55a2b;
+    }
+
+    .profile-btn {
+      background: #8b5cf6;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .profile-btn:hover {
+      background: #7c3aed;
     }
 
     /* Main Content */
@@ -93,12 +121,12 @@
       font-weight: 700;
       margin-bottom: 24px;
       line-height: 1.1;
-      color: #000;
+      color: #fff;
     }
 
     .hero-subtitle {
       font-size: 20px;
-      color: #666;
+      color: #ccc;
       margin-bottom: 48px;
       max-width: 600px;
       margin-left: auto;
@@ -112,8 +140,8 @@
     }
 
     .input-container {
-      background: #f8f8f8;
-      border: 1px solid #e0e0e0;
+      background: #1a1a1a;
+      border: 1px solid #333;
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 16px;
@@ -131,18 +159,18 @@
       border: none;
       outline: none;
       font-size: 16px;
-      color: #000;
+      color: #fff;
       font-family: inherit;
     }
 
     .main-input::placeholder {
-      color: #999;
+      color: #666;
     }
 
     .public-btn {
       background: transparent;
-      border: 1px solid #d0d0d0;
-      color: #666;
+      border: 1px solid #444;
+      color: #ccc;
       padding: 8px 12px;
       border-radius: 6px;
       font-size: 14px;
@@ -154,11 +182,11 @@
     }
 
     .public-btn:hover {
-      background: #f0f0f0;
+      background: #333;
     }
 
     .send-btn {
-      background: #000;
+      background: #333;
       color: #fff;
       border: none;
       padding: 12px;
@@ -171,31 +199,31 @@
     }
 
     .send-btn:hover {
-      background: #333;
+      background: #444;
     }
 
     /* Upload Area */
     .upload-area {
-      border: 2px dashed #d0d0d0;
+      border: 2px dashed #444;
       border-radius: 8px;
       padding: 32px;
       text-align: center;
-      background: #fafafa;
+      background: #1a1a1a;
     }
 
     .upload-icon {
       font-size: 24px;
       margin-bottom: 12px;
-      color: #999;
+      color: #666;
     }
 
     .upload-text {
-      color: #666;
+      color: #ccc;
       margin-bottom: 8px;
     }
 
     .upload-formats {
-      color: #999;
+      color: #666;
       font-size: 14px;
     }
 
@@ -203,7 +231,7 @@
     .footer {
       text-align: center;
       padding: 40px 0;
-      border-top: 1px solid #e5e5e5;
+      border-top: 1px solid #333;
     }
 
     .footer-links {
@@ -220,11 +248,11 @@
     }
 
     .footer-links a:hover {
-      color: #000;
+      color: #fff;
     }
 
     .footer-text {
-      color: #999;
+      color: #666;
       font-size: 14px;
     }
 
@@ -269,6 +297,7 @@
         <a href="#credits" class="get-credits-btn">
           🎁 Get free credits
         </a>
+        <button class="profile-btn">G</button>
       </nav>
     </div>
   </header>
