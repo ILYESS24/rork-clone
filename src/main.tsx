@@ -33,19 +33,9 @@ function creerInterfaceMobile() {
           }
           
           .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
             font-size: 24px;
             font-weight: 600;
             color: white;
-          }
-          
-          .logo-dot {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
           }
           
           .nav-right {
@@ -276,8 +266,7 @@ function creerInterfaceMobile() {
         <!-- Header -->
         <div class="header">
           <div class="logo">
-            <div class="logo-dot"></div>
-            Rork
+            • Rork
           </div>
           <div class="nav-right">
             <div class="nav-links">
@@ -302,7 +291,7 @@ function creerInterfaceMobile() {
           
           <!-- Input Area -->
           <div class="input-container">
-            <div class="input-icon">🖼️</div>
+            <div class="input-icon">📎</div>
             <textarea 
               class="main-input" 
               placeholder="Describe the mobile app you want to build..."
