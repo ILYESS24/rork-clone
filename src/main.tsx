@@ -1,8 +1,8 @@
-// INTERFACE ROCKET-STYLE - DESIGN SOMBRE PROFESSIONNEL
-console.log('🚀 DÉMARRAGE RORK PLATFORM - STYLE ROCKET');
+// INTERFACE MOBILE-FOCUSED - DESIGN MINIMALISTE ÉPURÉ
+console.log('📱 DÉMARRAGE RORK - FOCUS MOBILE APPS');
 
-// Interface Rocket IMMÉDIATE
-function creerInterfaceRocket() {
+// Interface Mobile-Focused IMMÉDIATE
+function creerInterfaceMobile() {
   const rootElement = document.getElementById('root');
   if (rootElement) {
     rootElement.innerHTML = `
@@ -11,14 +11,15 @@ function creerInterfaceRocket() {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Rork - AI-Powered App Builder</title>
+        <title>Rork - Build Native Mobile Apps</title>
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0a0a;
+            background: #000;
             color: white;
             min-height: 100vh;
+            overflow-x: hidden;
           }
           
           /* Header */
@@ -27,35 +28,30 @@ function creerInterfaceRocket() {
             justify-content: space-between;
             align-items: center;
             padding: 20px 40px;
-            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+            z-index: 100;
           }
           
           .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 600;
+            color: white;
           }
           
-          .logo-icon {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-            border-radius: 4px;
+          .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+          }
+          
+          .nav-right {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 14px;
-          }
-          
-          .beta-badge {
-            background: #1a1a1a;
-            color: #888;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-left: 8px;
+            gap: 30px;
           }
           
           .nav-links {
@@ -65,211 +61,167 @@ function creerInterfaceRocket() {
           }
           
           .nav-links a {
-            color: #888;
+            color: white;
             text-decoration: none;
-            transition: color 0.2s;
+            font-size: 14px;
+            font-weight: 400;
+            transition: opacity 0.2s;
           }
           
           .nav-links a:hover {
-            color: white;
+            opacity: 0.7;
           }
           
-          .get-started-btn {
-            background: #3b82f6;
+          .credits-btn {
+            background: #d97706;
             color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             text-decoration: none;
+            font-size: 14px;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             transition: background 0.2s;
           }
           
-          .get-started-btn:hover {
-            background: #2563eb;
+          .credits-btn:hover {
+            background: #b45309;
+          }
+          
+          .profile-btn {
+            width: 40px;
+            height: 40px;
+            background: #8b5cf6;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+          }
+          
+          .profile-btn:hover {
+            background: #7c3aed;
           }
           
           /* Main Content */
           .main-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 120px);
+            padding: 40px 20px;
             text-align: center;
           }
           
           .main-title {
-            font-size: 48px;
+            font-size: 64px;
             font-weight: 700;
-            margin-bottom: 40px;
-            line-height: 1.2;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            max-width: 800px;
           }
           
-          .app-types {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+          .subtitle {
+            font-size: 20px;
+            color: #a1a1aa;
+            margin-bottom: 60px;
+            max-width: 600px;
+            line-height: 1.4;
           }
           
-          .app-type-btn {
-            background: #1a1a1a;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 20px;
-            border: 1px solid #333;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-          }
-          
-          .app-type-btn:hover {
-            background: #2a2a2a;
-            border-color: #555;
-          }
-          
-          .app-type-btn.active {
-            background: #3b82f6;
-            border-color: #3b82f6;
-          }
-          
-          /* Input Area */
+          /* Input Container */
           .input-container {
             position: relative;
+            width: 100%;
+            max-width: 600px;
             margin-bottom: 40px;
           }
           
           .main-input {
             width: 100%;
             background: #1a1a1a;
-            border: 2px solid #333;
+            border: 1px solid #404040;
             border-radius: 12px;
-            padding: 20px 80px 20px 20px;
+            padding: 20px 60px 20px 50px;
             color: white;
             font-size: 16px;
             min-height: 60px;
             resize: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            font-family: inherit;
           }
           
           .main-input:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
           }
           
           .main-input::placeholder {
-            color: #666;
+            color: #71717a;
           }
           
-          .input-actions {
+          .input-icon {
             position: absolute;
-            bottom: 15px;
-            left: 20px;
-            display: flex;
-            gap: 15px;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #71717a;
+            font-size: 18px;
           }
           
-          .input-action {
+          .input-controls {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #666;
-            font-size: 14px;
-            cursor: pointer;
-            transition: color 0.2s;
+            gap: 12px;
           }
           
-          .input-action:hover {
+          .public-btn {
+            background: #262626;
             color: white;
-          }
-          
-          .submit-btn {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background: #3b82f6;
+            padding: 6px 12px;
+            border-radius: 6px;
             border: none;
-            border-radius: 8px;
-            width: 40px;
-            height: 40px;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
             cursor: pointer;
             transition: background 0.2s;
           }
           
-          .submit-btn:hover {
-            background: #2563eb;
+          .public-btn:hover {
+            background: #404040;
           }
           
-          /* Progress Bar */
-          .progress-bar {
-            height: 2px;
-            background: #1a1a1a;
-            margin-bottom: 60px;
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            width: 0%;
-            transition: width 0.3s ease;
-          }
-          
-          /* Workflow Steps */
-          .workflow {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 60px;
-          }
-          
-          .workflow-step {
-            text-align: left;
-          }
-          
-          .step-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #3b82f6;
-          }
-          
-          .step-description {
-            color: #888;
-            font-size: 14px;
-            line-height: 1.5;
-          }
-          
-          /* Technologies */
-          .tech-section {
-            border-top: 1px solid #1a1a1a;
-            padding-top: 40px;
-          }
-          
-          .tech-title {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-            text-align: left;
-          }
-          
-          .tech-grid {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-          }
-          
-          .tech-item {
-            background: #1a1a1a;
-            padding: 8px 12px;
+          .submit-btn {
+            background: none;
+            border: none;
+            color: #71717a;
+            cursor: pointer;
+            padding: 8px;
             border-radius: 6px;
-            border: 1px solid #333;
-            font-size: 12px;
-            color: #888;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .submit-btn:hover {
+            color: white;
+            background: #262626;
           }
           
           /* Responsive */
@@ -279,29 +231,43 @@ function creerInterfaceRocket() {
             }
             
             .nav-links {
-              gap: 15px;
+              display: none;
             }
             
-            .nav-links a {
+            .main-title {
+              font-size: 42px;
+            }
+            
+            .subtitle {
+              font-size: 18px;
+              margin-bottom: 40px;
+            }
+            
+            .input-container {
+              max-width: 100%;
+            }
+            
+            .main-input {
+              padding: 16px 50px 16px 45px;
               font-size: 14px;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .header {
+              padding: 12px 16px;
             }
             
             .main-title {
               font-size: 32px;
             }
             
-            .app-types {
-              gap: 8px;
+            .subtitle {
+              font-size: 16px;
             }
             
-            .app-type-btn {
-              padding: 10px 16px;
-              font-size: 12px;
-            }
-            
-            .workflow {
-              grid-template-columns: 1fr;
-              gap: 30px;
+            .main-content {
+              padding: 20px 16px;
             }
           }
         </style>
@@ -310,164 +276,85 @@ function creerInterfaceRocket() {
         <!-- Header -->
         <div class="header">
           <div class="logo">
-            <div class="logo-icon">🚀</div>
-            rork
-            <span class="beta-badge">BETA</span>
+            <div class="logo-dot"></div>
+            Rork
           </div>
-          <div class="nav-links">
-            <a href="/marketplace">Built with Rork</a>
-            <a href="/compare">Compare</a>
-            <a href="/templates">Templates</a>
-            <a href="/auth">Sign in</a>
-            <a href="/auth" class="get-started-btn">Get started</a>
+          <div class="nav-right">
+            <div class="nav-links">
+              <a href="/faq">FAQ</a>
+              <a href="/blog">Blog</a>
+              <a href="https://twitter.com/rork" target="_blank">X</a>
+              <a href="/pricing">Pricing</a>
+            </div>
+            <a href="/credits" class="credits-btn">
+              🎁 Get free credits
+            </a>
+            <button class="profile-btn">
+              G
+            </button>
           </div>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-          <h1 class="main-title">What do you want to build today?</h1>
-          
-          <!-- App Types -->
-          <div class="app-types">
-            <button class="app-type-btn active">Web App</button>
-            <button class="app-type-btn">Mobile App</button>
-            <button class="app-type-btn">Internal Tool</button>
-            <button class="app-type-btn">Website</button>
-            <button class="app-type-btn">Dashboard</button>
-            <button class="app-type-btn">Landing page</button>
-          </div>
+          <h1 class="main-title">Build native mobile apps, fast.</h1>
+          <p class="subtitle">Rork builds complete, cross-platform mobile apps using AI and React Native.</p>
           
           <!-- Input Area -->
           <div class="input-container">
+            <div class="input-icon">🖼️</div>
             <textarea 
               class="main-input" 
-              placeholder="What can Rork build for you today?"
-              rows="3"
+              placeholder="Describe the mobile app you want to build..."
+              rows="1"
             ></textarea>
-            
-            <div class="input-actions">
-              <div class="input-action">
-                📎 Attach
-              </div>
-              <div class="input-action">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-                Import Figma
-              </div>
-            </div>
-            
-            <button class="submit-btn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-              </svg>
-            </button>
-          </div>
-          
-          <!-- Progress Bar -->
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 0%"></div>
-          </div>
-          
-          <!-- Workflow Steps -->
-          <div class="workflow">
-            <div class="workflow-step">
-              <div class="step-title">Prompt</div>
-              <div class="step-description">
-                Ask Rork in your natural language or give requirements. Or import Figma URL/file to convert.
-              </div>
-            </div>
-            
-            <div class="workflow-step">
-              <div class="step-title">Develop</div>
-              <div class="step-description">
-                Rork will generate stunning and well researched website/app or convert your design into code.
-              </div>
-            </div>
-            
-            <div class="workflow-step">
-              <div class="step-title">Iterate</div>
-              <div class="step-description">
-                Customise your app- iterate in your natural language or make changes to code via console.
-              </div>
-            </div>
-            
-            <div class="workflow-step">
-              <div class="step-title">Deploy</div>
-              <div class="step-description">
-                Download your code, deploy on web, or push to GitHub as you wish and take it forward.
-              </div>
-            </div>
-          </div>
-          
-          <!-- Technologies -->
-          <div class="tech-section">
-            <div class="tech-title">Frameworks we support:</div>
-            <div class="tech-grid">
-              <div class="tech-item">React</div>
-              <div class="tech-item">Vue</div>
-              <div class="tech-item">Angular</div>
-              <div class="tech-item">Svelte</div>
-              <div class="tech-item">Next.js</div>
-              <div class="tech-item">Nuxt</div>
-            </div>
-          </div>
-          
-          <div class="tech-section">
-            <div class="tech-title">Integrations we support:</div>
-            <div class="tech-grid">
-              <div class="tech-item">GitHub</div>
-              <div class="tech-item">Vercel</div>
-              <div class="tech-item">Netlify</div>
-              <div class="tech-item">Firebase</div>
-              <div class="tech-item">Supabase</div>
-              <div class="tech-item">OpenAI</div>
-              <div class="tech-item">Anthropic</div>
-              <div class="tech-item">Stripe</div>
-              <div class="tech-item">PostgreSQL</div>
+            <div class="input-controls">
+              <button class="public-btn">
+                🌐 Public
+              </button>
+              <button class="submit-btn">
+                ✈️
+              </button>
             </div>
           </div>
         </div>
 
         <script>
-          // App Type Selection
-          document.querySelectorAll('.app-type-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-              document.querySelectorAll('.app-type-btn').forEach(b => b.classList.remove('active'));
-              this.classList.add('active');
-            });
+          // Auto-resize textarea
+          const textarea = document.querySelector('.main-input');
+          textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
           });
           
-          // Submit Button
+          // Submit functionality
           document.querySelector('.submit-btn').addEventListener('click', function() {
             const input = document.querySelector('.main-input');
-            const progressFill = document.querySelector('.progress-fill');
             
             if (input.value.trim()) {
-              // Animate progress bar
-              let progress = 0;
-              const interval = setInterval(() => {
-                progress += Math.random() * 10;
-                if (progress >= 100) {
-                  progress = 100;
-                  clearInterval(interval);
-                  
-                  // Redirect to builder
-                  setTimeout(() => {
-                    window.location.href = '/builder';
-                  }, 500);
-                }
-                progressFill.style.width = progress + '%';
-              }, 100);
+              // Show loading state
+              this.innerHTML = '⏳';
+              this.style.color = '#8b5cf6';
+              
+              // Simulate processing
+              setTimeout(() => {
+                window.location.href = '/builder?prompt=' + encodeURIComponent(input.value);
+              }, 1500);
             }
           });
           
           // Enter key support
-          document.querySelector('.main-input').addEventListener('keydown', function(e) {
+          textarea.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
               document.querySelector('.submit-btn').click();
             }
+          });
+          
+          // Public/Private toggle
+          document.querySelector('.public-btn').addEventListener('click', function() {
+            const isPublic = this.innerHTML.includes('Public');
+            this.innerHTML = isPublic ? '🔒 Private' : '🌐 Public';
           });
           
           // Navigation
@@ -475,19 +362,26 @@ function creerInterfaceRocket() {
             if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('/')) {
               e.preventDefault();
               const route = e.target.getAttribute('href');
-              window.location.href = route;
+              if (route !== '#') {
+                window.location.href = route;
+              }
             }
           });
+          
+          // Focus input on load
+          setTimeout(() => {
+            textarea.focus();
+          }, 500);
         </script>
       </body>
       </html>
     `;
-    console.log('✅ INTERFACE ROCKET CHARGÉE - DESIGN SOMBRE PROFESSIONNEL');
+    console.log('✅ INTERFACE MOBILE CHARGÉE - DESIGN MINIMALISTE ÉPURÉ');
   }
 }
 
-// Charger l'interface Rocket IMMÉDIATEMENT
-creerInterfaceRocket();
+// Charger l'interface Mobile IMMÉDIATEMENT
+creerInterfaceMobile();
 
 // Tentative de chargement React en arrière-plan (optionnel)
 setTimeout(() => {
