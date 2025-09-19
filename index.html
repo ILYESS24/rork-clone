@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rork - Build native mobile apps, fast</title>
@@ -157,10 +157,10 @@
     }
 
     .input-container {
-      background: #2a2a2a;
+      background: #1a1a1a;
       border: none;
-      border-radius: 12px;
-      padding: 16px 20px;
+      border-radius: 16px;
+      padding: 20px 24px;
       margin-bottom: 16px;
       position: relative;
     }
@@ -172,9 +172,16 @@
     }
 
     .input-icon {
-      color: #999;
+      background: #3a3a3a;
+      color: #fff;
       font-size: 16px;
-      margin-right: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
     }
 
     .main-input {
@@ -188,30 +195,31 @@
     }
 
     .main-input::placeholder {
-      color: #999;
+      color: #666;
     }
 
     .public-btn {
-      background: #3a3a3a;
+      background: #2a2a2a;
       border: none;
       color: #fff;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
       font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
     }
 
     .public-btn:hover {
-      background: #4a4a4a;
+      background: #3a3a3a;
     }
 
     .send-btn {
-      background: #fff;
-      color: #000;
+      background: #1a1a1a;
+      color: #fff;
       border: none;
       padding: 12px;
       border-radius: 8px;
@@ -220,10 +228,12 @@
       align-items: center;
       justify-content: center;
       transition: background 0.2s;
+      width: 44px;
+      height: 44px;
     }
 
     .send-btn:hover {
-      background: #f0f0f0;
+      background: #2a2a2a;
     }
 
 
@@ -280,8 +290,8 @@
       }
     }
   </style>
-</head>
-<body>
+  </head>
+  <body>
   <!-- Header -->
   <header class="header">
     <div class="container">
@@ -318,7 +328,7 @@
               placeholder="Describe the mobile app you want to build..."
             />
             <button class="public-btn">
-              Public
+              🌐 Public
             </button>
             <button class="send-btn">
               →
@@ -367,5 +377,5 @@
       this.innerHTML = isPublic ? '🔒 Private' : '🌐 Public';
     });
   </script>
-</body>
+  </body>
 </html>
