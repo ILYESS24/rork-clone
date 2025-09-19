@@ -49,26 +49,26 @@ export default function RorkHomePage() {
       <RorkNavigation />
       <div className="min-h-screen bg-black text-white">
         {/* Header */}
-        <header className="header">
+        <header className="rork-header">
         <div className="container">
           <div className="flex justify-between items-center">
-            <a href="/" className="logo">
+            <a href="/" className="rork-logo">
               Rork
             </a>
             
-            <nav className="nav">
-              <div className="nav-links">
+            <nav className="rork-nav">
+              <div className="rork-nav-links">
                 <a href="#faq">FAQ</a>
                 <a href="#blog">Blog</a>
                 <a href="#x">X</a>
                 <a href="#pricing">Pricing</a>
               </div>
               
-              <button className="get-credits-btn">
+              <button className="rork-get-credits-btn">
                 Get free credits
               </button>
               
-              <button className="profile-btn">
+              <button className="rork-profile-btn">
                 G
               </button>
             </nav>
@@ -77,19 +77,19 @@ export default function RorkHomePage() {
       </header>
 
       {/* Main Content */}
-      <main className="main">
+      <main className="rork-main">
         <div className="container">
-          <h1 className="hero-title">Build native mobile apps, fast.</h1>
-          <p className="hero-subtitle">Rork builds complete, cross-platform mobile apps using AI and React Native.</p>
+          <h1 className="rork-hero-title">Build native mobile apps, fast.</h1>
+          <p className="rork-hero-subtitle">Rork builds complete, cross-platform mobile apps using AI and React Native.</p>
           
           {/* Input Section */}
-          <div className="input-section">
-            <div className="input-container">
-              <div className="input-row">
-                <div className="input-icon">+</div>
+          <div className="rork-input-section">
+            <div className="rork-input-container">
+              <div className="rork-input-row">
+                <div className="rork-input-icon">+</div>
                 <input 
                   type="text" 
-                  className="main-input" 
+                  className="rork-main-input" 
                   placeholder="Describe the mobile app you want to build..."
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -97,13 +97,13 @@ export default function RorkHomePage() {
                   disabled={isStreaming}
                 />
                 <button 
-                  className="public-btn"
+                  className="rork-public-btn"
                   onClick={() => setIsPublic(!isPublic)}
                 >
                   {isPublic ? 'Public' : 'Private'}
                 </button>
                 <button 
-                  className="send-btn"
+                  className="rork-send-btn"
                   onClick={handleSubmit}
                   disabled={isStreaming || !prompt.trim()}
                   style={{ 
@@ -120,9 +120,9 @@ export default function RorkHomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="footer">
+      <footer className="rork-footer">
         <div className="container">
-          <div className="footer-links">
+          <div className="rork-footer-links">
             <a href="#terms">Terms</a>
             <a href="#privacy">Privacy</a>
             <a href="#affiliates">Affiliates</a>
@@ -133,8 +133,8 @@ export default function RorkHomePage() {
       </div>
       </div>
 
-      <style jsx>{`
-        .header {
+      <style>{`
+        .rork-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -142,7 +142,7 @@ export default function RorkHomePage() {
           min-height: 120px;
         }
 
-        .logo {
+        .rork-logo {
           font-family: 'Inter', sans-serif;
           font-size: 24px;
           font-weight: 700;
@@ -153,7 +153,7 @@ export default function RorkHomePage() {
           gap: 8px;
         }
 
-        .logo::before {
+        .rork-logo::before {
           content: "●";
           color: #fff;
           font-size: 12px;
@@ -163,18 +163,18 @@ export default function RorkHomePage() {
           background: #fff;
         }
 
-        .nav {
+        .rork-nav {
           display: flex;
           align-items: center;
           gap: 24px;
         }
 
-        .nav-links {
+        .rork-nav-links {
           display: flex;
           gap: 20px;
         }
 
-        .nav-links a {
+        .rork-nav-links a {
           font-family: 'Inter', sans-serif;
           color: #999;
           text-decoration: none;
@@ -183,11 +183,11 @@ export default function RorkHomePage() {
           transition: color 0.2s;
         }
 
-        .nav-links a:hover {
+        .rork-nav-links a:hover {
           color: #fff;
         }
 
-        .get-credits-btn {
+        .rork-get-credits-btn {
           background: #d97706;
           color: #fff;
           border: none;
@@ -201,11 +201,11 @@ export default function RorkHomePage() {
           transition: background 0.2s;
         }
 
-        .get-credits-btn:hover {
+        .rork-get-credits-btn:hover {
           background: #b45309;
         }
 
-        .profile-btn {
+        .rork-profile-btn {
           background: #8b5cf6;
           color: #fff;
           width: 36px;
@@ -221,16 +221,16 @@ export default function RorkHomePage() {
           transition: background 0.2s;
         }
 
-        .profile-btn:hover {
+        .rork-profile-btn:hover {
           background: #7c3aed;
         }
 
-        .main {
+        .rork-main {
           text-align: center;
           padding: 80px 0;
         }
 
-        .hero-title {
+        .rork-hero-title {
           font-family: 'Inter', sans-serif;
           font-size: 56px;
           font-weight: 600;
@@ -240,7 +240,7 @@ export default function RorkHomePage() {
           letter-spacing: -0.02em;
         }
 
-        .hero-subtitle {
+        .rork-hero-subtitle {
           font-family: 'Inter', sans-serif;
           font-size: 18px;
           color: #b3b3b3;
@@ -252,12 +252,12 @@ export default function RorkHomePage() {
           font-weight: 400;
         }
 
-        .input-section {
+        .rork-input-section {
           max-width: 600px;
           margin: 0 auto 48px;
         }
 
-        .input-container {
+        .rork-input-container {
           background: #1a1a1a;
           border: none;
           border-radius: 16px;
@@ -266,13 +266,13 @@ export default function RorkHomePage() {
           position: relative;
         }
 
-        .input-row {
+        .rork-input-row {
           display: flex;
           align-items: center;
           gap: 12px;
         }
 
-        .input-icon {
+        .rork-input-icon {
           background: #3a3a3a;
           color: #fff;
           font-size: 16px;
@@ -285,7 +285,7 @@ export default function RorkHomePage() {
           font-weight: 500;
         }
 
-        .main-input {
+        .rork-main-input {
           flex: 1;
           background: transparent;
           border: none;
@@ -295,11 +295,11 @@ export default function RorkHomePage() {
           font-family: inherit;
         }
 
-        .main-input::placeholder {
+        .rork-main-input::placeholder {
           color: #666;
         }
 
-        .public-btn {
+        .rork-public-btn {
           background: #2a2a2a;
           border: none;
           color: #fff;
@@ -314,11 +314,11 @@ export default function RorkHomePage() {
           font-family: 'Inter', sans-serif;
         }
 
-        .public-btn:hover {
+        .rork-public-btn:hover {
           background: #3a3a3a;
         }
 
-        .send-btn {
+        .rork-send-btn {
           background: #1a1a1a;
           color: #fff;
           border: none;
@@ -333,34 +333,34 @@ export default function RorkHomePage() {
           height: 44px;
         }
 
-        .send-btn:hover {
+        .rork-send-btn:hover {
           background: #2a2a2a;
         }
 
-        .footer {
+        .rork-footer {
           text-align: center;
           padding: 40px 0;
         }
 
-        .footer-links {
+        .rork-footer-links {
           display: flex;
           justify-content: center;
           gap: 24px;
           margin-bottom: 16px;
         }
 
-        .footer-links a {
+        .rork-footer-links a {
           color: #666;
           text-decoration: none;
           font-size: 14px;
           transition: color 0.2s;
         }
 
-        .footer-links a:hover {
+        .rork-footer-links a:hover {
           color: #999;
         }
 
-        .footer p {
+        .rork-footer p {
           color: #666;
           font-size: 14px;
         }
