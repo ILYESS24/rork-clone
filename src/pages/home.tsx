@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { 
   Globe,
   Send,
-  Smartphone,
-  Zap,
-  Bot
+  Upload,
+  Gift
 } from 'lucide-react';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState('');
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -18,11 +18,13 @@ export default function HomePage() {
         <div className="text-2xl font-bold">Rork</div>
         
         <nav className="flex items-center space-x-8">
-          <a href="#" className="text-gray-300 hover:text-white">Docs</a>
-          <a href="#" className="text-gray-300 hover:text-white">Examples</a>
+          <a href="#" className="text-gray-300 hover:text-white">FAQ</a>
+          <a href="#" className="text-gray-300 hover:text-white">Blog</a>
+          <a href="#" className="text-gray-300 hover:text-white">X</a>
           <a href="#" className="text-gray-300 hover:text-white">Pricing</a>
-          <button className="bg-white text-black px-6 py-2 rounded-lg font-medium">
-            Get Started
+          <button className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
+            <Gift className="w-4 h-4" />
+            <span>Get free credits</span>
           </button>
         </nav>
       </header>
@@ -42,55 +44,50 @@ export default function HomePage() {
           
           {/* Input Section */}
           <div className="max-w-4xl mx-auto mb-20">
-            <div className="bg-gray-800 rounded-2xl p-6 flex items-center space-x-4">
-              <Smartphone className="w-6 h-6 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Describe the mobile app you want to build..."
-                className="flex-1 bg-transparent text-white placeholder-gray-400 text-lg focus:outline-none"
-              />
-              <div className="flex items-center space-x-3">
-                <button className="text-white hover:bg-gray-700 flex items-center space-x-2 px-4 py-2 rounded-lg">
-                  <Globe className="w-4 h-4" />
-                  <span>Public</span>
-                </button>
-                <button className="bg-white text-black p-3 rounded-lg">
-                  <Send className="w-5 h-5" />
-                </button>
+            <div className="bg-gray-800 rounded-2xl p-6">
+              <div className="flex items-center space-x-4 mb-4">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Describe the mobile app you want to build..."
+                  className="flex-1 bg-transparent text-white placeholder-gray-400 text-lg focus:outline-none"
+                />
+                <div className="flex items-center space-x-3">
+                  <button className="text-white hover:bg-gray-700 flex items-center space-x-2 px-4 py-2 rounded-lg">
+                    <Globe className="w-4 h-4" />
+                    <span>Public</span>
+                  </button>
+                  <button className="bg-white text-black p-3 rounded-lg">
+                    <Send className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Upload Area */}
+              <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
+                <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-gray-400 mb-2">Drop images here to upload them to the conversation</p>
+                <p className="text-sm text-gray-500">PNG JPG Max 5MB</p>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Features Section */}
-      <section className="px-8 pb-20">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            Why choose Rork?
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Fast Development */}
-            <div className="bg-gray-800 rounded-2xl p-8">
-              <div className="w-16 h-16 bg-orange-500 rounded-xl flex items-center justify-center mb-6">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4">Fast Development</h3>
-              <p className="text-gray-300 text-lg">Build apps in minutes, not months</p>
-            </div>
-            
-            {/* AI-Powered */}
-            <div className="bg-gray-800 rounded-2xl p-8">
-              <div className="w-16 h-16 bg-purple-500 rounded-xl flex items-center justify-center mb-6">
-                <Bot className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4">AI-Powered</h3>
-              <p className="text-gray-300 text-lg">Smart code generation and suggestions</p>
-            </div>
+      {/* Footer */}
+      <footer className="px-8 pb-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center space-x-6 text-gray-400 mb-4">
+            <a href="#" className="hover:text-white">Terms</a>
+            <a href="#" className="hover:text-white">Privacy</a>
+            <a href="#" className="hover:text-white">Affiliates</a>
           </div>
+          <p className="text-gray-500 text-sm">
+            Try out projects built on Rork in App Store
+          </p>
         </div>
-      </section>
+      </footer>
     </div>
   );
 }
