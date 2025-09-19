@@ -17,59 +17,10 @@ function creerInterfaceMobile() {
           
           body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            background-attachment: fixed;
-            color: white;
+            background: #000;
+            color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
-          }
-          
-          /* Animated Background */
-          body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-              radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.05) 0%, transparent 50%);
-            animation: backgroundShift 20s ease-in-out infinite;
-            z-index: -1;
-          }
-          
-          @keyframes backgroundShift {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-          }
-          
-          /* Floating Particles */
-          .particle {
-            position: fixed;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-            z-index: -1;
-          }
-          
-          .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
-          .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 2s; }
-          .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 4s; }
-          .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 6s; }
-          .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 8s; }
-          .particle:nth-child(6) { width: 7px; height: 7px; left: 60%; animation-delay: 10s; }
-          .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 12s; }
-          .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 14s; }
-          .particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 16s; }
-          
-          @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
           }
           
           /* Header */
@@ -78,9 +29,7 @@ function creerInterfaceMobile() {
             justify-content: space-between;
             align-items: center;
             padding: 20px 40px;
-            position: relative;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           }
@@ -88,12 +37,7 @@ function creerInterfaceMobile() {
           .logo {
             font-size: 24px;
             font-weight: 600;
-            color: white;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            background: linear-gradient(45deg, #ffffff, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #fff;
           }
           
           .nav-right {
@@ -109,44 +53,23 @@ function creerInterfaceMobile() {
           }
           
           .nav-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             font-size: 14px;
             font-weight: 400;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .nav-links a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
+            transition: color 0.3s ease;
+            padding: 8px 0;
           }
           
           .nav-links a:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-          }
-          
-          .nav-links a:hover::before {
-            left: 100%;
+            color: #fff;
           }
           
           .credits-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-            color: white;
+            background: #fff;
+            color: #000;
             padding: 10px 20px;
-            border-radius: 25px;
+            border-radius: 6px;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -154,39 +77,30 @@ function creerInterfaceMobile() {
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           
           .credits-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(255, 107, 107, 0.4);
-            background: linear-gradient(135deg, #ff5252, #ff7043);
+            background: rgba(255, 255, 255, 0.9);
           }
           
           .profile-btn {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 40px;
+            height: 40px;
+            background: #fff;
             border: none;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #000;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           
           .profile-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+            background: rgba(255, 255, 255, 0.9);
           }
           
           /* Main Content */
@@ -198,36 +112,24 @@ function creerInterfaceMobile() {
             min-height: calc(100vh - 120px);
             padding: 40px 20px;
             text-align: center;
-            position: relative;
           }
           
           .main-title {
             font-size: clamp(48px, 8vw, 80px);
-            font-weight: 800;
+            font-weight: 700;
             margin-bottom: 24px;
             line-height: 1.1;
             max-width: 900px;
-            background: linear-gradient(135deg, #ffffff 0%, #a855f7 50%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
-            animation: titleGlow 3s ease-in-out infinite alternate;
-          }
-          
-          @keyframes titleGlow {
-            0% { filter: brightness(1); }
-            100% { filter: brightness(1.2); }
+            color: #fff;
           }
           
           .subtitle {
             font-size: clamp(18px, 3vw, 24px);
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 80px;
             max-width: 700px;
             line-height: 1.6;
             font-weight: 300;
-            letter-spacing: 0.5px;
           }
           
           /* Input Container */
@@ -241,32 +143,25 @@ function creerInterfaceMobile() {
           .main-input {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             padding: 24px 70px 24px 60px;
-            color: white;
+            color: #fff;
             font-size: 16px;
             min-height: 70px;
             resize: none;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             font-family: inherit;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           }
           
           .main-input:focus {
             outline: none;
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 
-              0 8px 32px rgba(0, 0, 0, 0.1),
-              0 0 0 4px rgba(168, 85, 247, 0.1),
-              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
             background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
           }
           
           .main-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             font-weight: 300;
           }
           
@@ -275,14 +170,8 @@ function creerInterfaceMobile() {
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.5);
             font-size: 20px;
-            transition: all 0.3s ease;
-          }
-          
-          .input-container:hover .input-icon {
-            color: rgba(168, 85, 247, 0.8);
-            transform: translateY(-50%) scale(1.1);
           }
           
           .input-controls {
@@ -297,9 +186,9 @@ function creerInterfaceMobile() {
           
           .public-btn {
             background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.7);
             padding: 8px 16px;
-            border-radius: 15px;
+            border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 12px;
             display: flex;
@@ -307,37 +196,29 @@ function creerInterfaceMobile() {
             gap: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
           }
           
           .public-btn:hover {
             background: rgba(255, 255, 255, 0.2);
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            color: #fff;
           }
           
           .submit-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #fff;
             border: none;
-            color: white;
+            color: #000;
             cursor: pointer;
             padding: 12px;
-            border-radius: 15px;
+            border-radius: 6px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
           }
           
           .submit-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+            background: rgba(255, 255, 255, 0.9);
           }
           
           /* Responsive */
@@ -376,17 +257,6 @@ function creerInterfaceMobile() {
         </style>
       </head>
       <body>
-        <!-- Floating Particles -->
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        
         <!-- Header -->
         <div class="header">
           <div class="logo">
