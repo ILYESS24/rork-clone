@@ -341,28 +341,89 @@
 
   <!-- JavaScript pour connecter l'interface -->
   <script>
-    // Import des modules nécessaires (simulation pour l'environnement web)
-    class MockIpcClient {
+    // Connexion avec le vrai système Dyad
+    class DyadIpcClient {
       async createApp(params) {
-        // Simulation de la création d'app
-        console.log('Creating app with params:', params);
+        // Utiliser le vrai système de création d'app
+        console.log('Creating app with Dyad system:', params);
         
-        // Simuler un délai de création
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        const appId = Math.floor(Math.random() * 10000);
-        const chatId = Math.floor(Math.random() * 10000);
-        
-        return {
-          app: { id: appId, name: params.name },
-          chatId: chatId
-        };
+        try {
+          // Appeler l'API de création d'app
+          const response = await fetch('/api/apps', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: params.name,
+              initialPrompt: params.initialPrompt
+            })
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          console.error('Error creating app:', error);
+          // Fallback vers localStorage pour l'environnement web
+          const appId = Date.now();
+          const chatId = Date.now() + 1;
+          
+          // Stocker dans localStorage
+          const apps = JSON.parse(localStorage.getItem('dyad_apps') || '[]');
+          const newApp = {
+            id: appId,
+            name: params.name,
+            createdAt: new Date().toISOString(),
+            initialPrompt: params.initialPrompt
+          };
+          apps.push(newApp);
+          localStorage.setItem('dyad_apps', JSON.stringify(apps));
+          
+          return {
+            app: newApp,
+            chatId: chatId
+          };
+        }
       }
       
       async streamChatMessage(params) {
-        console.log('Streaming message:', params);
-        // Simulation du streaming
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        console.log('Streaming message with Dyad:', params);
+        
+        try {
+          // Utiliser le vrai système de streaming
+          const response = await fetch('/api/chat/stream', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          // Gérer le streaming
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value);
+            console.log('Streaming chunk:', chunk);
+            // Ici on pourrait mettre à jour l'UI en temps réel
+          }
+        } catch (error) {
+          console.error('Error streaming message:', error);
+          // Fallback pour l'environnement web
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
     }
 
@@ -437,8 +498,8 @@
     `;
     document.head.appendChild(style);
 
-    // Initialiser le client IPC
-    const ipcClient = new MockIpcClient();
+    // Initialiser le client Dyad
+    const dyadClient = new DyadIpcClient();
 
     // Variables d'état
     let isStreaming = false;
@@ -457,18 +518,27 @@
       }
 
       try {
-        const result = await ipcClient.createApp({
+        const result = await dyadClient.createApp({
           name: `App ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
           initialPrompt: prompt
         });
         
-        showSuccess('Application créée avec succès ! Redirection vers le chat...');
+        showSuccess('Application créée avec succès ! Redirection vers l\'éditeur Dyad...');
         
-        // Simuler la redirection vers le chat
+        // Redirection vers le vrai système Dyad
         setTimeout(() => {
-          // Dans un vrai environnement, on redirigerait vers /chat?id=${result.chatId}
-          console.log('Redirection vers le chat:', result.chatId);
-          showSuccess('Fonctionnalité connectée ! L\'app a été créée.');
+          // Redirection vers l'interface Dyad complète avec l'éditeur
+          const chatUrl = `/chat?id=${result.chatId}&appId=${result.app.id}`;
+          console.log('Redirection vers l\'éditeur Dyad:', chatUrl);
+          
+          // Si on est dans l'environnement Dyad, rediriger vers le chat
+          if (window.location.pathname.includes('/chat') || window.location.hostname === 'localhost') {
+            window.location.href = chatUrl;
+          } else {
+            // Sinon, ouvrir dans un nouvel onglet ou rediriger
+            showSuccess('App créée ! Ouvrez l\'éditeur Dyad pour voir votre application.');
+            console.log('App créée avec ID:', result.app.id, 'Chat ID:', result.chatId);
+          }
         }, 1500);
         
       } catch (error) {

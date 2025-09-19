@@ -1,297 +1,365 @@
-import React from 'react';
-// import { Link } from 'react-router-dom'; // Using TanStack Router instead
-import { ArrowRight, Play, Star, Users, Zap, Shield, Code, Palette, Layers } from 'lucide-react';
-import { RorkNavigation } from '@/components/rork-platform/RorkNavigation';
+import React, { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { useStreamChat } from '../hooks/useStreamChat';
+import { showSuccess, showError } from '../utils/notifications';
 
 export default function RorkHomePage() {
-  const features = [
-    {
-      icon: Code,
-      title: 'Visual App Builder',
-      description: 'Build applications visually with drag-and-drop components and real-time preview.',
-      color: 'from-blue-500 to-blue-600'
-    },
-    {
-      icon: Palette,
-      title: 'Beautiful Templates',
-      description: 'Choose from hundreds of professionally designed templates for any use case.',
-      color: 'from-purple-500 to-purple-600'
-    },
-    {
-      icon: Zap,
-      title: 'Instant Deployment',
-      description: 'Deploy your applications with a single click to our global CDN.',
-      color: 'from-green-500 to-green-600'
-    },
-    {
-      icon: Users,
-      title: 'Team Collaboration',
-      description: 'Work together with your team in real-time on shared projects.',
-      color: 'from-orange-500 to-orange-600'
-    }
-  ];
+  const [prompt, setPrompt] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
+  const navigate = useNavigate();
+  const { streamMessage, isStreaming } = useStreamChat({ hasChatId: false });
 
-  const stats = [
-    { number: '50K+', label: 'Apps Created' },
-    { number: '2M+', label: 'Downloads' },
-    { number: '100K+', label: 'Active Users' },
-    { number: '99.9%', label: 'Uptime' }
-  ];
+  const handleSubmit = async () => {
+    if (!prompt.trim() || isStreaming) return;
 
-  const templates = [
-    {
-      name: 'E-commerce Store',
-      description: 'Complete online store with payment integration',
-      image: '/api/placeholder/400/250',
-      category: 'E-commerce',
-      rating: 4.9,
-      downloads: '2.3K'
-    },
-    {
-      name: 'Portfolio Website',
-      description: 'Modern portfolio with animations and dark mode',
-      image: '/api/placeholder/400/250',
-      category: 'Portfolio',
-      rating: 4.8,
-      downloads: '1.8K'
-    },
-    {
-      name: 'Dashboard App',
-      description: 'Analytics dashboard with real-time data',
-      image: '/api/placeholder/400/250',
-      category: 'Dashboard',
-      rating: 4.7,
-      downloads: '3.1K'
-    },
-    {
-      name: 'Landing Page',
-      description: 'High-converting landing page template',
-      image: '/api/placeholder/400/250',
-      category: 'Marketing',
-      rating: 4.9,
-      downloads: '4.2K'
+    try {
+      // Créer une nouvelle app avec le prompt initial
+      const result = await streamMessage({
+        prompt: prompt.trim(),
+        chatId: undefined // Pas de chatId = création d'app
+      });
+
+      if (result) {
+        showSuccess('Application créée avec succès ! Redirection vers l\'éditeur...');
+        
+        // Rediriger vers l'interface Dyad complète
+        setTimeout(() => {
+          navigate({
+            to: '/chat',
+            search: { id: result.chatId, appId: result.app.id }
+          });
+        }, 1500);
+      }
+    } catch (error) {
+      showError('Erreur lors de la création de l\'application: ' + error.message);
+      console.error('Error creating app:', error);
     }
-  ];
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      <RorkNavigation currentUser={{
-        name: 'Alex Developer',
-        avatar: '/api/placeholder/32/32',
-        notifications: 3
-      }} />
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <header className="header">
+        <div className="container">
+          <div className="flex justify-between items-center">
+            <a href="/" className="logo">
+              Rork
+            </a>
+            
+            <nav className="nav">
+              <div className="nav-links">
+                <a href="#faq">FAQ</a>
+                <a href="#blog">Blog</a>
+                <a href="#x">X</a>
+                <a href="#pricing">Pricing</a>
+              </div>
+              
+              <button className="get-credits-btn">
+                Get free credits
+              </button>
+              
+              <button className="profile-btn">
+                G
+              </button>
+            </nav>
+          </div>
+        </div>
+      </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Build Apps That
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Matter</span>
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Create, deploy, and scale web applications without writing a single line of code. 
-              Join thousands of developers building the future with Rork.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/builder"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl font-medium text-lg"
-              >
-                <Play className="w-5 h-5 mr-2" />
-                Start Building
-              </Link>
-              <Link
-                to="/marketplace"
-                className="inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 font-medium text-lg"
-              >
-                Browse Templates
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
+      {/* Main Content */}
+      <main className="main">
+        <div className="container">
+          <h1 className="hero-title">Build native mobile apps, fast.</h1>
+          <p className="hero-subtitle">Rork builds complete, cross-platform mobile apps using AI and React Native.</p>
+          
+          {/* Input Section */}
+          <div className="input-section">
+            <div className="input-container">
+              <div className="input-row">
+                <div className="input-icon">+</div>
+                <input 
+                  type="text" 
+                  className="main-input" 
+                  placeholder="Describe the mobile app you want to build..."
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={isStreaming}
+                />
+                <button 
+                  className="public-btn"
+                  onClick={() => setIsPublic(!isPublic)}
+                >
+                  {isPublic ? 'Public' : 'Private'}
+                </button>
+                <button 
+                  className="send-btn"
+                  onClick={handleSubmit}
+                  disabled={isStreaming || !prompt.trim()}
+                  style={{ 
+                    opacity: isStreaming || !prompt.trim() ? 0.5 : 1,
+                    cursor: isStreaming || !prompt.trim() ? 'not-allowed' : 'pointer'
+                  }}
+                >
+                  →
+                </button>
+              </div>
             </div>
           </div>
-
-          {/* Hero Image/Demo */}
-          <div className="mt-16 relative">
-            <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-              <div className="bg-gray-50 border-b border-gray-200 p-4 flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              </div>
-              <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-8xl mb-4">🚀</div>
-                  <p className="text-xl font-semibold text-gray-700">Your App Preview</p>
-                  <p className="text-gray-500">Build and see changes in real-time</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{stat.number}</div>
-                <div className="text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need to Build
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From idea to deployment, Rork provides all the tools you need to create amazing web applications.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r ${feature.color} flex items-center justify-center`}>
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Templates Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Popular Templates
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Start with professionally designed templates and customize them to match your vision.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {templates.map((template, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden border border-gray-200">
-                <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                  <div className="text-6xl">🚀</div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-blue-600 font-medium">{template.category}</span>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 text-yellow-400 mr-1" />
-                      <span className="text-sm text-gray-600">{template.rating}</span>
-                    </div>
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{template.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{template.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{template.downloads} downloads</span>
-                    <Link
-                      to="/marketplace"
-                      className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                    >
-                      View Template
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link
-              to="/marketplace"
-              className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 font-medium"
-            >
-              View All Templates
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Start Building?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join thousands of developers who are already building amazing applications with Rork.
-          </p>
-          <Link
-            to="/builder"
-            className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl font-medium text-lg"
-          >
-            <Play className="w-5 h-5 mr-2" />
-            Start Building Now
-          </Link>
-        </div>
-      </section>
+      </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">R</span>
-                </div>
-                <span className="text-xl font-bold">Rork</span>
-              </div>
-              <p className="text-gray-400">
-                The platform for building, deploying, and scaling web applications.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/builder" className="hover:text-white">App Builder</Link></li>
-                <li><Link to="/marketplace" className="hover:text-white">Marketplace</Link></li>
-                <li><Link to="/templates" className="hover:text-white">Templates</Link></li>
-                <li><Link to="/deployment" className="hover:text-white">Deployment</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Resources</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/docs" className="hover:text-white">Documentation</Link></li>
-                <li><Link to="/tutorials" className="hover:text-white">Tutorials</Link></li>
-                <li><Link to="/community" className="hover:text-white">Community</Link></li>
-                <li><Link to="/support" className="hover:text-white">Support</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/about" className="hover:text-white">About</Link></li>
-                <li><Link to="/blog" className="hover:text-white">Blog</Link></li>
-                <li><Link to="/careers" className="hover:text-white">Careers</Link></li>
-                <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-              </ul>
-            </div>
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-links">
+            <a href="#terms">Terms</a>
+            <a href="#privacy">Privacy</a>
+            <a href="#affiliates">Affiliates</a>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Rork. All rights reserved.</p>
-          </div>
+          <p>© 2024 Rork. All rights reserved.</p>
         </div>
       </footer>
+
+      <style jsx>{`
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 40px 0;
+          min-height: 120px;
+        }
+
+        .logo {
+          font-family: 'Inter', sans-serif;
+          font-size: 24px;
+          font-weight: 700;
+          color: #fff;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .logo::before {
+          content: "●";
+          color: #fff;
+          font-size: 12px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #fff;
+        }
+
+        .nav {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 20px;
+        }
+
+        .nav-links a {
+          font-family: 'Inter', sans-serif;
+          color: #999;
+          text-decoration: none;
+          font-weight: 400;
+          font-size: 14px;
+          transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+          color: #fff;
+        }
+
+        .get-credits-btn {
+          background: #d97706;
+          color: #fff;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 14px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          transition: background 0.2s;
+        }
+
+        .get-credits-btn:hover {
+          background: #b45309;
+        }
+
+        .profile-btn {
+          background: #8b5cf6;
+          color: #fff;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 16px;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+
+        .profile-btn:hover {
+          background: #7c3aed;
+        }
+
+        .main {
+          text-align: center;
+          padding: 80px 0;
+        }
+
+        .hero-title {
+          font-family: 'Inter', sans-serif;
+          font-size: 56px;
+          font-weight: 600;
+          margin-bottom: 20px;
+          line-height: 1.1;
+          color: #fff;
+          letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+          font-family: 'Inter', sans-serif;
+          font-size: 18px;
+          color: #b3b3b3;
+          margin-bottom: 48px;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+          line-height: 1.4;
+          font-weight: 400;
+        }
+
+        .input-section {
+          max-width: 600px;
+          margin: 0 auto 48px;
+        }
+
+        .input-container {
+          background: #1a1a1a;
+          border: none;
+          border-radius: 16px;
+          padding: 20px 24px;
+          margin-bottom: 16px;
+          position: relative;
+        }
+
+        .input-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .input-icon {
+          background: #3a3a3a;
+          color: #fff;
+          font-size: 16px;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+        }
+
+        .main-input {
+          flex: 1;
+          background: transparent;
+          border: none;
+          outline: none;
+          font-size: 16px;
+          color: #fff;
+          font-family: inherit;
+        }
+
+        .main-input::placeholder {
+          color: #666;
+        }
+
+        .public-btn {
+          background: #2a2a2a;
+          border: none;
+          color: #fff;
+          padding: 10px 16px;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 0.2s;
+          font-family: 'Inter', sans-serif;
+        }
+
+        .public-btn:hover {
+          background: #3a3a3a;
+        }
+
+        .send-btn {
+          background: #1a1a1a;
+          color: #fff;
+          border: none;
+          padding: 12px;
+          border-radius: 8px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s;
+          width: 44px;
+          height: 44px;
+        }
+
+        .send-btn:hover {
+          background: #2a2a2a;
+        }
+
+        .footer {
+          text-align: center;
+          padding: 40px 0;
+        }
+
+        .footer-links {
+          display: flex;
+          justify-content: center;
+          gap: 24px;
+          margin-bottom: 16px;
+        }
+
+        .footer-links a {
+          color: #666;
+          text-decoration: none;
+          font-size: 14px;
+          transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+          color: #999;
+        }
+
+        .footer p {
+          color: #666;
+          font-size: 14px;
+        }
+      `}</style>
     </div>
   );
 }

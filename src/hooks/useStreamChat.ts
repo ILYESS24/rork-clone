@@ -26,22 +26,18 @@ export function useStreamChat(options: UseStreamChatOptions = {}) {
 
     try {
       if (options.hasChatId === false || !params.chatId) {
-        // Create new app with initial prompt
+        // Create new app with initial prompt using the real Dyad system
         const result = await IpcClient.getInstance().createApp({
-          name: `App ${Date.now()}`,
+          name: `App ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
           initialPrompt: params.prompt
         });
         
-        showSuccess('Application créée avec succès !');
+        showSuccess('Application créée avec succès ! Redirection vers l\'éditeur Dyad...');
         
-        // Navigate to the new chat
-        if (typeof window !== 'undefined') {
-          window.location.href = `/chat?id=${result.chatId}`;
-        }
-        
+        // Return the result so the component can handle navigation
         return result;
       } else {
-        // Stream message to existing chat
+        // Stream message to existing chat using the real Dyad system
         await IpcClient.getInstance().streamChatMessage({
           chatId: params.chatId,
           prompt: params.prompt,
@@ -55,6 +51,7 @@ export function useStreamChat(options: UseStreamChatOptions = {}) {
       setError(errorMessage);
       showError(errorMessage);
       console.error('Stream message error:', err);
+      throw err; // Re-throw so the component can handle it
     } finally {
       setIsStreaming(false);
     }
