@@ -339,6 +339,190 @@
     </div>
   </main>
 
+  <!-- JavaScript pour connecter l'interface -->
+  <script>
+    // Import des modules nécessaires (simulation pour l'environnement web)
+    class MockIpcClient {
+      async createApp(params) {
+        // Simulation de la création d'app
+        console.log('Creating app with params:', params);
+        
+        // Simuler un délai de création
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        const appId = Math.floor(Math.random() * 10000);
+        const chatId = Math.floor(Math.random() * 10000);
+        
+        return {
+          app: { id: appId, name: params.name },
+          chatId: chatId
+        };
+      }
+      
+      async streamChatMessage(params) {
+        console.log('Streaming message:', params);
+        // Simulation du streaming
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+
+    // Fonction de notification
+    function showSuccess(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 10000;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.3s ease-out;
+      `;
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    function showError(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ef4444;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 10000;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.3s ease-out;
+      `;
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+          }
+        }, 300);
+      }, 4000);
+    }
+
+    // Ajouter les styles d'animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialiser le client IPC
+    const ipcClient = new MockIpcClient();
+
+    // Variables d'état
+    let isStreaming = false;
+
+    // Fonction pour créer une app avec le prompt
+    async function createAppWithPrompt(prompt) {
+      if (isStreaming || !prompt.trim()) return;
+      
+      isStreaming = true;
+      
+      // Désactiver le bouton Send
+      const sendBtn = document.querySelector('.send-btn');
+      if (sendBtn) {
+        sendBtn.style.opacity = '0.5';
+        sendBtn.style.cursor = 'not-allowed';
+      }
+
+      try {
+        const result = await ipcClient.createApp({
+          name: `App ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
+          initialPrompt: prompt
+        });
+        
+        showSuccess('Application créée avec succès ! Redirection vers le chat...');
+        
+        // Simuler la redirection vers le chat
+        setTimeout(() => {
+          // Dans un vrai environnement, on redirigerait vers /chat?id=${result.chatId}
+          console.log('Redirection vers le chat:', result.chatId);
+          showSuccess('Fonctionnalité connectée ! L\'app a été créée.');
+        }, 1500);
+        
+      } catch (error) {
+        showError('Erreur lors de la création de l\'application: ' + error.message);
+        console.error('Error creating app:', error);
+      } finally {
+        isStreaming = false;
+        
+        // Réactiver le bouton Send
+        if (sendBtn) {
+          sendBtn.style.opacity = '1';
+          sendBtn.style.cursor = 'pointer';
+        }
+      }
+    }
+
+    // Connecter les événements
+    document.addEventListener('DOMContentLoaded', function() {
+      const input = document.querySelector('.main-input');
+      const sendBtn = document.querySelector('.send-btn');
+      const publicBtn = document.querySelector('.public-btn');
+
+      if (sendBtn) {
+        sendBtn.addEventListener('click', function() {
+          const prompt = input ? input.value.trim() : '';
+          if (prompt) {
+            createAppWithPrompt(prompt);
+          }
+        });
+      }
+
+      if (input) {
+        input.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            const prompt = input.value.trim();
+            if (prompt) {
+              createAppWithPrompt(prompt);
+            }
+          }
+        });
+      }
+
+      if (publicBtn) {
+        publicBtn.addEventListener('click', function() {
+          // Toggle public/private state
+          const isPublic = publicBtn.textContent.includes('Public');
+          publicBtn.textContent = isPublic ? 'Private' : 'Public';
+          publicBtn.style.background = isPublic ? '#1a1a1a' : '#2a2a2a';
+        });
+      }
+    });
+  </script>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
