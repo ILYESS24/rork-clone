@@ -44,6 +44,7 @@ export function RorkNavigation({ currentUser }: NavigationProps = {}) {
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
+    { name: 'Rork', href: '/rork', icon: Zap },
     { name: 'Builder', href: '/builder', icon: Code },
     { name: 'Marketplace', href: '/marketplace', icon: Store },
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
