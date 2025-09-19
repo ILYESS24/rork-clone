@@ -146,17 +146,24 @@
     }
 
     .input-container {
-      background: #1a1a1a;
-      border: 1px solid #333;
+      background: #2a2a2a;
+      border: none;
       border-radius: 12px;
-      padding: 20px;
+      padding: 16px 20px;
       margin-bottom: 16px;
+      position: relative;
     }
 
     .input-row {
       display: flex;
       align-items: center;
       gap: 12px;
+    }
+
+    .input-icon {
+      color: #999;
+      font-size: 16px;
+      margin-right: 8px;
     }
 
     .main-input {
@@ -170,13 +177,13 @@
     }
 
     .main-input::placeholder {
-      color: #666;
+      color: #999;
     }
 
     .public-btn {
-      background: transparent;
-      border: 1px solid #444;
-      color: #ccc;
+      background: #3a3a3a;
+      border: none;
+      color: #fff;
       padding: 8px 12px;
       border-radius: 6px;
       font-size: 14px;
@@ -188,12 +195,12 @@
     }
 
     .public-btn:hover {
-      background: #333;
+      background: #4a4a4a;
     }
 
     .send-btn {
-      background: #333;
-      color: #fff;
+      background: #fff;
+      color: #000;
       border: none;
       padding: 12px;
       border-radius: 8px;
@@ -205,7 +212,7 @@
     }
 
     .send-btn:hover {
-      background: #444;
+      background: #f0f0f0;
     }
 
     /* Upload Area */
@@ -317,6 +324,7 @@
       <div class="input-section">
         <div class="input-container">
           <div class="input-row">
+            <div class="input-icon">📱</div>
             <input 
               type="text" 
               class="main-input" 
