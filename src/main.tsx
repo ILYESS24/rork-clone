@@ -15,8 +15,10 @@ function creerInterfaceMobile() {
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+          
           body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #000;
             color: #fff;
             min-height: 100vh;
@@ -28,37 +30,39 @@ function creerInterfaceMobile() {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
+            padding: 12px 24px;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           }
           
           .logo {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 600;
             color: #fff;
+            font-family: 'Inter', sans-serif;
           }
           
           .nav-right {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
           }
           
           .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 20px;
             align-items: center;
           }
           
           .nav-links a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
             transition: color 0.3s ease;
-            padding: 8px 0;
+            padding: 4px 0;
+            font-family: 'Inter', sans-serif;
           }
           
           .nav-links a:hover {
@@ -68,15 +72,16 @@ function creerInterfaceMobile() {
           .credits-btn {
             background: #fff;
             color: #000;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 4px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
           }
           
           .credits-btn:hover {
@@ -84,8 +89,8 @@ function creerInterfaceMobile() {
           }
           
           .profile-btn {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background: #fff;
             border: none;
             border-radius: 50%;
@@ -93,10 +98,11 @@ function creerInterfaceMobile() {
             align-items: center;
             justify-content: center;
             color: #000;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
           }
           
           .profile-btn:hover {
@@ -109,49 +115,51 @@ function creerInterfaceMobile() {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: calc(100vh - 120px);
-            padding: 40px 20px;
+            min-height: calc(100vh - 80px);
+            padding: 20px;
             text-align: center;
           }
           
           .main-title {
-            font-size: clamp(48px, 8vw, 80px);
+            font-size: clamp(32px, 6vw, 56px);
             font-weight: 700;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             line-height: 1.1;
-            max-width: 900px;
+            max-width: 600px;
             color: #fff;
+            font-family: 'Inter', sans-serif;
           }
           
           .subtitle {
-            font-size: clamp(18px, 3vw, 24px);
+            font-size: clamp(14px, 2.5vw, 18px);
             color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 80px;
-            max-width: 700px;
-            line-height: 1.6;
-            font-weight: 300;
+            margin-bottom: 40px;
+            max-width: 500px;
+            line-height: 1.5;
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
           }
           
           /* Input Container */
           .input-container {
             position: relative;
             width: 100%;
-            max-width: 700px;
-            margin-bottom: 60px;
+            max-width: 500px;
+            margin-bottom: 40px;
           }
           
           .main-input {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 24px 70px 24px 60px;
+            border-radius: 8px;
+            padding: 16px 50px 16px 45px;
             color: #fff;
-            font-size: 16px;
-            min-height: 70px;
+            font-size: 14px;
+            min-height: 50px;
             resize: none;
             transition: all 0.3s ease;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
           }
           
           .main-input:focus {
@@ -162,40 +170,42 @@ function creerInterfaceMobile() {
           
           .main-input::placeholder {
             color: rgba(255, 255, 255, 0.4);
-            font-weight: 300;
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
           }
           
           .input-icon {
             position: absolute;
-            left: 20px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: rgba(255, 255, 255, 0.5);
-            font-size: 20px;
+            font-size: 16px;
           }
           
           .input-controls {
             position: absolute;
-            right: 20px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
           }
           
           .public-btn {
             background: rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.7);
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 4px 8px;
+            border-radius: 4px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 12px;
+            font-size: 11px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
           }
           
           .public-btn:hover {
@@ -208,13 +218,13 @@ function creerInterfaceMobile() {
             border: none;
             color: #000;
             cursor: pointer;
-            padding: 12px;
-            border-radius: 6px;
+            padding: 8px;
+            border-radius: 4px;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 14px;
           }
           
           .submit-btn:hover {
@@ -224,7 +234,7 @@ function creerInterfaceMobile() {
           /* Responsive */
           @media (max-width: 768px) {
             .header {
-              padding: 15px 20px;
+              padding: 10px 16px;
             }
             
             .nav-links {
@@ -232,26 +242,41 @@ function creerInterfaceMobile() {
             }
             
             .main-content {
-              padding: 20px 16px;
+              padding: 16px;
             }
             
             .main-input {
-              padding: 20px 60px 20px 50px;
-              font-size: 14px;
+              padding: 14px 45px 14px 40px;
+              font-size: 13px;
             }
           }
           
           @media (max-width: 480px) {
             .header {
-              padding: 12px 16px;
+              padding: 8px 12px;
             }
             
             .main-content {
-              padding: 20px 16px;
+              padding: 12px;
             }
             
             .input-container {
               max-width: 100%;
+            }
+            
+            .logo {
+              font-size: 16px;
+            }
+            
+            .credits-btn {
+              padding: 4px 8px;
+              font-size: 11px;
+            }
+            
+            .profile-btn {
+              width: 28px;
+              height: 28px;
+              font-size: 12px;
             }
           }
         </style>
