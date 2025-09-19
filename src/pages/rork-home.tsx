@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useStreamChat } from '../hooks/useStreamChat';
 import { showSuccess, showError } from '../utils/notifications';
+import { RorkNavigation } from '@/components/rork-platform/RorkNavigation';
 
 export default function RorkHomePage() {
   const [prompt, setPrompt] = useState('');
@@ -44,9 +45,11 @@ export default function RorkHomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <header className="header">
+    <div className="min-h-screen bg-gray-50">
+      <RorkNavigation />
+      <div className="min-h-screen bg-black text-white">
+        {/* Header */}
+        <header className="header">
         <div className="container">
           <div className="flex justify-between items-center">
             <a href="/" className="logo">
@@ -127,6 +130,8 @@ export default function RorkHomePage() {
           <p>© 2024 Rork. All rights reserved.</p>
         </div>
       </footer>
+      </div>
+      </div>
 
       <style jsx>{`
         .header {

@@ -1,10 +1,4 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { RorkNavigation } from "@/components/rork-platform/RorkNavigation";
-
-const queryClient = new QueryClient();
 
 export const rootRoute = createRootRoute({
   component: RootComponent,
@@ -12,16 +6,8 @@ export const rootRoute = createRootRoute({
 
 function RootComponent() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <div className="min-h-screen bg-gray-50">
-          <RorkNavigation />
-          <main>
-            <Outlet />
-          </main>
-        </div>
-        <Toaster />
-      </ThemeProvider>
-    </QueryClientProvider>
+    <div className="min-h-screen">
+      <Outlet />
+    </div>
   );
 }
